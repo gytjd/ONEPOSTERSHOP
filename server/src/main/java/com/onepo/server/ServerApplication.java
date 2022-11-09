@@ -1,13 +1,13 @@
-package beeges.onepostershop;
+package com.onepo.server;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class OnepostershopApplication {
+public class ServerApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(OnepostershopApplication.class, args);
+		SpringApplication.run(ServerApplication.class, args);
 	}
 
 }

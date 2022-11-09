@@ -1,10 +1,10 @@
-package beeges.onepostershop;
+package com.onepo.server;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class OnepostershopApplicationTests {
+class ServerApplicationTests {
 
 	@Test
 	void contextLoads() {

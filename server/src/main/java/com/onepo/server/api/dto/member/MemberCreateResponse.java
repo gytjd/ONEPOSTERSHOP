@@ -12,6 +12,5 @@ public class MemberCreateResponse {
 
     public MemberCreateResponse(Member member) {
         this.name = member.getName();
-        this.userId = member.getUserId();
     }
 }

@@ -29,6 +29,7 @@ public class MemberRepository {
                 .getResultList();
     }
 
+    //중복 회원 검사를 위한 userId로 등록된 회원찾기
     public List<Member> findByUserId(String userId) {
         return em.createQuery("select m from Member As m where m.userId = :userId", Member.class)
                 .setParameter("userId", userId)

@@ -34,10 +34,7 @@ public class NewsController {
         String storeImageFiles = fileStore.storeFile(dto.getImageFile());
 
         News news = new News();
-        news.setTitle(dto.getTitle());
-        news.setContent(dto.getContent());
-        news.setContent(dto.getContent());
-        news.setImageFiles(storeImageFiles);
+
         newsService.create(news);
 
         redirectAttributes.addAttribute("itemId", news.getId());

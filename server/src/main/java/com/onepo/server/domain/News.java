@@ -1,6 +1,7 @@
 package com.onepo.server.domain;
 
 import lombok.Getter;
+import lombok.Setter;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.Entity;
@@ -10,6 +11,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Getter
+@Setter
 public class News {
 
     @Id

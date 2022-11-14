@@ -31,6 +31,10 @@ public class Member {
     @Email
     private String email;
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="WISH_ID")
+    private Wish wish;
+
     //회원등록 생성자
     public void register(String name, String userId, String password, String email) {
         this.name = name;

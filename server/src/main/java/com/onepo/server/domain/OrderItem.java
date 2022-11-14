@@ -2,12 +2,14 @@ package com.onepo.server.domain;
 
 import com.onepo.server.domain.item.Item;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
 
 @Entity
 @Getter
+@NoArgsConstructor
 public class OrderItem {
 
     @Id
@@ -23,6 +25,8 @@ public class OrderItem {
     @JoinColumn(name="ITEM_ID")
     private Item item;
 
-
-
+    public OrderItem(Order order, Item item) {
+        this.order = order;
+        this.item = item;
+    }
 }

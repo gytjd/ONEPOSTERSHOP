@@ -18,4 +18,9 @@ public class Item {
     @GeneratedValue
     @Column(name = "ITEM_ID")
     private Long id;
+
+    private String itemName;
+    private int stockQuantity;
+    private int price;
+    private String description;
 }

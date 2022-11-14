@@ -18,5 +18,7 @@ public class Delivery {
     @Column(name="DELIVERY_ID")
     private Long id;
 
+    private String address;
+
 
 }

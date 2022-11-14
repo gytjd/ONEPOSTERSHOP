@@ -52,9 +52,8 @@ public class OrderController {
             return "orders/createOrderForm";
         }
 
-
-        Address address =new Address(form.getCity(), form.getStreet(),form.getZipcode());
         Delivery delivery=new Delivery();
+        Address address =new Address(form.getCity(), form.getStreet(),form.getZipcode());
         delivery.setAddress(address);
 
         orderService.order(memberId,itemId,delivery,count);

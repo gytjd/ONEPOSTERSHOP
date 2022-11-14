@@ -25,7 +25,6 @@ public class OrderService {
         Item findItem = itemRepository.findOne(itemId);
 
         OrderItem orderItem=OrderItem.createOrderItem(findItem,findItem.getPrice(),count);
-
         Order order = Order.createOrder(findMember,delivery,orderItem);
 
         orderRepository.save(order);
@@ -36,6 +35,6 @@ public class OrderService {
     @Transactional
     public void cancelOrder(Long orderId) {
         Order findOrder = orderRepository.findOne(orderId);
-
+        findOrder.cancel();
     }
 }

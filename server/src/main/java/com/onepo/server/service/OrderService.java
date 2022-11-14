@@ -1,10 +1,7 @@
 package com.onepo.server.service;
 
 
-import com.onepo.server.api.dto.order.Address;
-import com.onepo.server.domain.Member;
-import com.onepo.server.domain.Order;
-import com.onepo.server.domain.OrderItem;
+import com.onepo.server.domain.*;
 import com.onepo.server.domain.item.Item;
 import com.onepo.server.repository.ItemRepository;
 import com.onepo.server.repository.MemberRepository;
@@ -23,16 +20,22 @@ public class OrderService {
     private final ItemRepository itemRepository;
 
     @Transactional
-    public Long order(Long memberId,Long itemId,Address address,int count) {
+    public Long order(Long memberId, Long itemId, Delivery delivery, int count) {
         Member findMember = memberRepository.findOne(memberId);
         Item findItem = itemRepository.findOne(itemId);
 
         OrderItem orderItem=OrderItem.createOrderItem(findItem,findItem.getPrice(),count);
 
-        Order order = Order.createOrder(findMember,address,orderItem);
+        Order order = Order.createOrder(findMember,delivery,orderItem);
 
         orderRepository.save(order);
 
         return order.getId();
+    }
+
+    @Transactional
+    public void cancelOrder(Long orderId) {
+        Order findOrder = orderRepository.findOne(orderId);
+
     }
 }

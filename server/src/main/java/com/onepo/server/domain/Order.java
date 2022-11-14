@@ -1,8 +1,8 @@
 package com.onepo.server.domain;
 
-import com.onepo.server.api.dto.order.Address;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -11,6 +11,7 @@ import java.util.List;
 
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor
 @Table(name = "ORDERS")
 public class Order {
@@ -32,14 +33,17 @@ public class Order {
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
 
-    @Embedded
-    private Address address;
 
-    public Order(Member member, LocalDateTime orderDate, OrderStatus orderStatus, Address address,OrderItem...orderItems) {
+    @OneToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @JoinColumn(name="DELIVERY_ID")
+    private Delivery delivery;
+
+
+    public Order(Member member, LocalDateTime orderDate, OrderStatus orderStatus, Delivery delivery,OrderItem...orderItems) {
         this.member = member;
         this.orderDate = orderDate;
         this.orderStatus = orderStatus;
-        this.address = address;
+        this.delivery=delivery;
 
         for (OrderItem orderItem: orderItems) {
             this.addOrderItem(orderItem);
@@ -57,16 +61,42 @@ public class Order {
         orderItem.setOrder(this);
     }
 
+    public void setDelivery(Delivery delivery) {
+        this.delivery=delivery;
+    }
+
 
     //생성 메소드
 
-    public static Order createOrder(Member member,Address address,OrderItem...orderItems) {
+    public static Order createOrder(Member member,Delivery delivery,OrderItem...orderItems) {
 
-        Order order=new Order(member,LocalDateTime.now(),OrderStatus.ORDER,address,orderItems);
+        Order order=new Order(member,LocalDateTime.now(),OrderStatus.ORDER,delivery,orderItems);
 
         return order;
     }
 
     // 비지니스 로직
+
+    public void cancel() {
+        if (delivery.getStatus()==DeliveryStatus.COMP) {
+            throw new IllegalStateException("배송 된 상품은 취소 불가입니당 ㅋ");
+        }
+
+        this.setOrderStatus(OrderStatus.CANCEL);
+        for (OrderItem orderItem : this.orderItems) {
+            orderItem.cancel();
+        }
+    }
+
+    public int getTotalPrice() {
+        int totalPrice=0;
+
+        for(OrderItem orderItem : this.orderItems) {
+            totalPrice+= orderItem.getTotalPrice();
+        }
+
+        return totalPrice;
+    }
+
 
 }

@@ -1,7 +1,8 @@
 package com.onepo.server.api.controller;
 
 import com.onepo.server.api.dto.order.OrderForm;
-import com.onepo.server.api.dto.order.Address;
+import com.onepo.server.domain.Address;
+import com.onepo.server.domain.Delivery;
 import com.onepo.server.domain.Member;
 import com.onepo.server.domain.item.Item;
 import com.onepo.server.service.ItemService;
@@ -51,9 +52,12 @@ public class OrderController {
             return "orders/createOrderForm";
         }
 
-        Address address =new Address(form.getCity(), form.getStreet(),form.getZipcode());
 
-        orderService.order(memberId,itemId,address,count);
+        Address address =new Address(form.getCity(), form.getStreet(),form.getZipcode());
+        Delivery delivery=new Delivery();
+        delivery.setAddress(address);
+
+        orderService.order(memberId,itemId,delivery,count);
 
 
         return "redirect:/orders";

@@ -25,6 +25,13 @@ public class Item {
     private int price;
     private String description;
 
+    public void createArt(String itemName, int stockQuantity, int price, String description) {
+        this.itemName = itemName;
+        this.stockQuantity = stockQuantity;
+        this.price = price;
+        this.description = description;
+    }
+
     public void addStock(int quantity) {
         this.stockQuantity+=quantity;
     }

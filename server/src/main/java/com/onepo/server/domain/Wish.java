@@ -16,4 +16,5 @@ public class Wish {
 
     @OneToOne(mappedBy = "wish",fetch = FetchType.LAZY)
     private Member member;
+
 }

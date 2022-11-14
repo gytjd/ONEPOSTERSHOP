@@ -1,6 +1,7 @@
 package com.onepo.server.domain.item;
 
 
+import com.onepo.server.exception.NotEnoughStockException;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -23,4 +24,18 @@ public class Item {
     private int stockQuantity;
     private int price;
     private String description;
+
+    public void addStock(int quantity) {
+        this.stockQuantity+=quantity;
+    }
+
+    public void removeStock(int quantity) {
+        int restStock=this.stockQuantity-quantity;
+
+        if (restStock<0) {
+            throw new NotEnoughStockException("재고가 더 필요합니다.");
+        }
+
+        this.stockQuantity=restStock;
+    }
 }

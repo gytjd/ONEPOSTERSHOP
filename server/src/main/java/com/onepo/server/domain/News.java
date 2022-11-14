@@ -22,5 +22,4 @@ public class News {
 
     private String content;
 
-    private MultipartFile multipartFile;
 }

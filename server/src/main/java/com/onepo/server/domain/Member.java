@@ -15,7 +15,7 @@ public class Member {
 
     @Id
     @GeneratedValue
-    @Column(name = "member_id")
+    @Column(name = "MEMBER_ID")
     private Long id;
 
     @NotEmpty
@@ -30,6 +30,10 @@ public class Member {
     @NotEmpty
     @Email
     private String email;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="WISH_ID")
+    private Wish wish;
 
     //회원등록 생성자
     public void register(String name, String userId, String password, String email) {

@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+
 @Entity
 @Getter
 @Setter
@@ -39,7 +40,7 @@ public class Order {
     private Delivery delivery;
 
 
-    public Order(Member member, LocalDateTime orderDate, OrderStatus orderStatus, Delivery delivery,OrderItem...orderItems) {
+    public Order(Member member, LocalDateTime orderDate, OrderStatus orderStatus, Delivery delivery,List<OrderItem> orderItems) {
         this.member = member;
         this.orderDate = orderDate;
         this.orderStatus = orderStatus;
@@ -68,7 +69,7 @@ public class Order {
 
     //생성 메소드
 
-    public static Order createOrder(Member member,Delivery delivery,OrderItem...orderItems) {
+    public static Order createOrder(Member member,Delivery delivery,List<OrderItem> orderItems) {
 
         Order order=new Order(member,LocalDateTime.now(),OrderStatus.ORDER,delivery,orderItems);
 
@@ -94,7 +95,6 @@ public class Order {
         for(OrderItem orderItem : this.orderItems) {
             totalPrice+= orderItem.getTotalPrice();
         }
-
         return totalPrice;
     }
 

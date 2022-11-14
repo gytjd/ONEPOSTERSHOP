@@ -56,7 +56,7 @@ public class OrderController {
         Address address =new Address(form.getCity(), form.getStreet(),form.getZipcode());
         delivery.setAddress(address);
 
-        orderService.order(memberId,itemId,delivery,count);
+        orderService.order(memberId,delivery);
 
 
         return "redirect:/orders";

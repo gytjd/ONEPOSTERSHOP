@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -24,40 +25,50 @@ public class OrderService {
 
     private final OrderItemRepository orderItemRepository;
     private final MemberRepository memberRepository;
-    private final ItemRepository itemRepository;
 
     private final WishItemRepository wishItemRepository;
 
     private final WishRepository wishRepository;
 
     @Transactional
-    public Long order(Long memberId,Long itemId,Delivery delivery,int count) {
+    public OrderItem addCartOrder(Long userId,Item item,WishItem wishItem) {
+        Member findMember = memberRepository.findOne(userId);
 
-        Member findMember = memberRepository.findOne(memberId);
-        Item findItem = itemRepository.findOne(itemId);
+        OrderItem orderItem = OrderItem.createOrderItem(findMember,item,wishItem);
 
+        orderItemRepository.save(orderItem);
 
-        OrderItem orderItem = OrderItem.createOrderItem(findItem, findItem.getPrice(), count);
-        Order order = Order.createOrder(findMember,delivery,orderItem);
+        return orderItem;
+    }
+
+    @Transactional
+    public Long addOrder(Member member,Wish wish,Delivery delivery,List<OrderItem> orderItemList) {
+        Order order = Order.createOrder(member,wish, delivery, orderItemList);
 
         orderRepository.save(order);
 
         return order.getId();
     }
 
+    @Transactional
+    public Long order(Member member,Delivery delivery) {
+        Wish wishByMemberId = wishRepository.findWishByMemberId(member.getId());
+        List<WishItem> userWishList = wishItemRepository.findWishItemsByWishId(wishByMemberId.getId());
 
-    public List<OrderItem> findUserOrderItems(Long id) {
-        return orderItemRepository.findOrderItemsByMemberId(id);
+        List<OrderItem> orderItemList = new ArrayList<>();
+
+        for (WishItem wishItem : userWishList) {
+            OrderItem orderItem = addCartOrder(member.getId(),
+                    wishItem.getItem(),
+                    wishItem);
+
+            orderItemList.add(orderItem);
+        }
+
+        Long orderId = addOrder(member, wishByMemberId,delivery, orderItemList);
+
+        return orderId;
     }
-
-    public OrderItem findOrderItem(Long orderItemid) {
-        return orderItemRepository.findOrderItemById(orderItemid);
-    }
-
-
-
-
-
 
 
 }

@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-@Builder
+
 @AllArgsConstructor
 @Entity
 @Getter
@@ -32,8 +32,6 @@ public class Wish {
     @OneToMany(mappedBy = "wish",cascade = CascadeType.ALL)
     private List<WishItem> wishItemList = new ArrayList<>();
 
-    @DateTimeFormat(pattern = "yyyy-mm-dd")
-    private LocalDateTime localDateTime;
 
     public Wish(Member member) {
         this.member = member;

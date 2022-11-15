@@ -1,7 +1,6 @@
 package com.onepo.server.domain.order;
 
 import com.onepo.server.domain.item.Item;
-<<<<<<< HEAD
 import com.onepo.server.domain.member.Member;
 import com.onepo.server.domain.wish.WishItem;
 import lombok.*;
@@ -10,14 +9,6 @@ import javax.persistence.*;
 
 @Builder
 @AllArgsConstructor
-=======
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
-import javax.persistence.*;
-
->>>>>>> origin/main
 @Entity
 @Getter
 @Setter
@@ -37,7 +28,6 @@ public class OrderItem {
     @JoinColumn(name="ITEM_ID")
     private Item item;
 
-<<<<<<< HEAD
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="MEMBER_ID")
     private Member member; // 구매자
@@ -52,18 +42,19 @@ public class OrderItem {
     private int TotalPrice;
 
 
+
     public static OrderItem createOrderItem(Member member,Item item,WishItem wishItem) {
-        OrderItem orderItem=new OrderItem();
+        OrderItem orderItem = new OrderItem();
 
         orderItem.setMember(member);
         orderItem.setItem(item);
         orderItem.setWishItem(wishItem);
         orderItem.setOrderPrice(wishItem.getItem().getPrice());
         orderItem.setCount(wishItem.getWishCount());
-        orderItem.setTotalPrice(wishItem.getItem().getPrice()*wishItem.getWishCount());
-=======
-    private int orderPrice;
-    private int count;
+        orderItem.setTotalPrice(wishItem.getItem().getPrice() * wishItem.getWishCount());
+
+        return orderItem;
+    }
 
     public OrderItem(Item item, int orderPrice, int count) {
         this.item = item;
@@ -78,15 +69,11 @@ public class OrderItem {
         OrderItem orderItem=new OrderItem(item,orderPrice,count);
 
         item.removeStock(count);
->>>>>>> origin/main
 
         return orderItem;
     }
 
-<<<<<<< HEAD
 
-
-=======
     public void cancel() {
         getItem().addStock(count);
     }
@@ -94,5 +81,4 @@ public class OrderItem {
     public int getTotalPrice() {
         return getOrderPrice()*getCount();
     }
->>>>>>> origin/main
 }

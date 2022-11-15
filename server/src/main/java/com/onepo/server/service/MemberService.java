@@ -22,7 +22,6 @@ public class MemberService {
         validateDuplicateUserId(member);    //아이디 중복 검사
         memberRepository.save(member);
 
-        wishService.createCart(member);
         return member.getId();
     }
 

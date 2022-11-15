@@ -6,20 +6,14 @@ import com.onepo.server.domain.item.Item;
 import com.onepo.server.domain.member.Member;
 import com.onepo.server.domain.order.Order;
 import com.onepo.server.domain.order.OrderItem;
-<<<<<<< HEAD
 import com.onepo.server.domain.wish.Wish;
 import com.onepo.server.domain.wish.WishItem;
 import com.onepo.server.repository.*;
-=======
-import com.onepo.server.repository.ItemRepository;
-import com.onepo.server.repository.MemberRepository;
-import com.onepo.server.repository.OrderRepository;
-import com.onepo.server.repository.WishRepository;
->>>>>>> origin/main
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -37,7 +31,7 @@ public class OrderService {
     private final WishRepository wishRepository;
 
     @Transactional
-    public OrderItem addCartOrder(Long userId,Item item,WishItem wishItem) {
+    public OrderItem addCartOrder(Long userId, Item item, WishItem wishItem) {
         Member findMember = memberRepository.findOne(userId);
 
         OrderItem orderItem = OrderItem.createOrderItem(findMember,item,wishItem);
@@ -48,7 +42,7 @@ public class OrderService {
     }
 
     @Transactional
-    public Long addOrder(Member member,Wish wish,Delivery delivery,List<OrderItem> orderItemList) {
+    public Long addOrder(Member member, Wish wish, Delivery delivery, List<OrderItem> orderItemList) {
         Order order = Order.createOrder(member,wish, delivery, orderItemList);
 
         orderRepository.save(order);

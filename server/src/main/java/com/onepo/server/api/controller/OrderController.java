@@ -1,13 +1,9 @@
 package com.onepo.server.api.controller;
 
 import com.onepo.server.api.dto.order.OrderForm;
-<<<<<<< HEAD
+
 import com.onepo.server.domain.delivery.Address;
 import com.onepo.server.domain.delivery.Delivery;
-=======
-import com.onepo.server.domain.Address;
-import com.onepo.server.domain.Delivery;
->>>>>>> origin/main
 import com.onepo.server.domain.member.Member;
 import com.onepo.server.domain.item.Item;
 import com.onepo.server.service.ItemService;

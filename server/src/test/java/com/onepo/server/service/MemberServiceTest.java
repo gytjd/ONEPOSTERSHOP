@@ -1,10 +1,7 @@
 package com.onepo.server.service;
 
 import com.onepo.server.domain.member.Member;
-<<<<<<< HEAD
-=======
 import org.assertj.core.api.Assertions;
->>>>>>> origin/main
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;

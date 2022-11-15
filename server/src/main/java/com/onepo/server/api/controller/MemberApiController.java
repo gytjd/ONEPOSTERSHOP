@@ -5,7 +5,11 @@ import com.onepo.server.api.dto.member.MemberCreateResponse;
 import com.onepo.server.domain.Member;
 import com.onepo.server.service.MemberService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/api")
@@ -20,7 +24,11 @@ public class MemberApiController {
     }
 
     @PostMapping("/createMember")
-    public MemberCreateResponse create(@RequestBody MemberCreateDto dto) {
+    public MemberCreateResponse create(@Validated @RequestBody MemberCreateDto dto, BindingResult bindingResult) {
+
+        if (bindingResult.hasErrors()) {
+            return null;
+        }
         Member member = new Member();
 
         member.register(dto.getName(), dto.getUserId(), dto.getPassword(), dto.getEmail());

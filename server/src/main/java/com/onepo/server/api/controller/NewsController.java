@@ -33,7 +33,7 @@ public class NewsController {
     public String saveItem(@ModelAttribute NewsCreateDto dto, RedirectAttributes redirectAttributes) throws IOException {
         String storeImageFiles = fileStore.storeFile(dto.getImageFile());
 
-        News news = new News();
+        News news = dto.toEntity(storeImageFiles);
 
         newsService.create(news);
 

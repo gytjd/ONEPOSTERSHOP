@@ -10,6 +10,7 @@
   </div>
   title: <span th:text="${news.title}">title</span><br/>
   content: <span th:text="${news.content}">content</span><br/>
+  <img th:src="@{http://3.36.122.123/api/image/} + ${news.imageFiles}" width="300" height="300"/>
   <img th:src="|/images/${news.imageFiles}|" width="300" height="300"/>
 </div> <!-- /container -->
 </body>

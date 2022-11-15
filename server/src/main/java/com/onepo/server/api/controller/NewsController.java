@@ -24,12 +24,12 @@ public class NewsController {
 
     private final FileStore fileStore;
 
-    @GetMapping("/items/new")
+    @GetMapping("/news/new")
     public String newItem(@ModelAttribute NewsCreateDto dto) {
-        return "item-form";
+        return "news-form";
     }
 
-    @PostMapping("/items/new")
+    @PostMapping("/news/new")
     public String saveItem(@ModelAttribute NewsCreateDto dto, RedirectAttributes redirectAttributes) throws IOException {
         String storeImageFiles = fileStore.storeFile(dto.getImageFile());
 
@@ -37,16 +37,16 @@ public class NewsController {
 
         newsService.create(news);
 
-        redirectAttributes.addAttribute("itemId", news.getId());
+        redirectAttributes.addAttribute("newsId", news.getId());
 
-        return "redirect:/items/{itemId}";
+        return "redirect:/news/{newsId}";
     }
 
-    @GetMapping("/items/{id}")
+    @GetMapping("/news/{id}")
     public String items(@PathVariable Long id, Model model) {
         News news = newsService.findOne(id);
         model.addAttribute("news", news);
-        return "item-view";
+        return "news-view";
     }
 
     @ResponseBody

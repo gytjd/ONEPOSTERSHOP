@@ -1,7 +1,6 @@
 package com.onepo.server.api.dto.member;
 
-import com.onepo.server.domain.Member;
-import lombok.AllArgsConstructor;
+import com.onepo.server.domain.member.Member;
 import lombok.Data;
 
 @Data

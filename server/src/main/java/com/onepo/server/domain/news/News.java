@@ -1,4 +1,4 @@
-package com.onepo.server.domain;
+package com.onepo.server.domain.news;
 
 import lombok.Getter;
 import lombok.Setter;

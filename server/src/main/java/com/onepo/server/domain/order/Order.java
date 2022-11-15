@@ -1,5 +1,8 @@
-package com.onepo.server.domain;
+package com.onepo.server.domain.order;
 
+import com.onepo.server.domain.delivery.Delivery;
+import com.onepo.server.domain.delivery.DeliveryStatus;
+import com.onepo.server.domain.member.Member;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -40,7 +43,7 @@ public class Order {
     private Delivery delivery;
 
 
-    public Order(Member member, LocalDateTime orderDate, OrderStatus orderStatus, Delivery delivery,List<OrderItem> orderItems) {
+    public Order(Member member, LocalDateTime orderDate, OrderStatus orderStatus, Delivery delivery,OrderItem...orderItems) {
         this.member = member;
         this.orderDate = orderDate;
         this.orderStatus = orderStatus;
@@ -62,14 +65,11 @@ public class Order {
         orderItem.setOrder(this);
     }
 
-    public void setDelivery(Delivery delivery) {
-        this.delivery=delivery;
-    }
 
 
     //생성 메소드
 
-    public static Order createOrder(Member member,Delivery delivery,List<OrderItem> orderItems) {
+    public static Order createOrder(Member member,Delivery delivery,OrderItem...orderItems) {
 
         Order order=new Order(member,LocalDateTime.now(),OrderStatus.ORDER,delivery,orderItems);
 
@@ -79,8 +79,8 @@ public class Order {
     // 비지니스 로직
 
     public void cancel() {
-        if (delivery.getStatus()==DeliveryStatus.COMP) {
-            throw new IllegalStateException("배송 된 상품은 취소 불가입니당 ㅋ");
+        if (delivery.getStatus()== DeliveryStatus.COMP) {
+            throw new IllegalStateException("배송 된 상품은 취소 불가합니다.");
         }
 
         this.setOrderStatus(OrderStatus.CANCEL);
@@ -97,6 +97,8 @@ public class Order {
         }
         return totalPrice;
     }
+
+
 
 
 }

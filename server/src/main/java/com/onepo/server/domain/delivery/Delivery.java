@@ -1,6 +1,5 @@
-package com.onepo.server.domain;
+package com.onepo.server.domain.delivery;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 

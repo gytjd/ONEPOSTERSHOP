@@ -1,4 +1,4 @@
-package com.onepo.server.domain;
+package com.onepo.server.domain.delivery;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

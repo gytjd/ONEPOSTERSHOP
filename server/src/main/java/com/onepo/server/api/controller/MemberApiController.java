@@ -2,7 +2,7 @@ package com.onepo.server.api.controller;
 
 import com.onepo.server.api.dto.member.MemberCreateDto;
 import com.onepo.server.api.dto.member.MemberCreateResponse;
-import com.onepo.server.domain.Member;
+import com.onepo.server.domain.member.Member;
 import com.onepo.server.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;

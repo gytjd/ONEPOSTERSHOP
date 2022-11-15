@@ -1,7 +1,7 @@
 package com.onepo.server.service;
 
 
-import com.onepo.server.domain.Member;
+import com.onepo.server.domain.member.Member;
 import com.onepo.server.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,10 +16,15 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
 
+    private final WishService wishService;
+
     //회원가입
     public Long join(Member member) {
         validateDuplicateUserId(member);    //아이디 중복 검사
         memberRepository.save(member);
+
+        wishService.createCart(member);
+
         return member.getId();
     }
 

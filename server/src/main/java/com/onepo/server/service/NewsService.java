@@ -1,6 +1,6 @@
 package com.onepo.server.service;
 
-import com.onepo.server.domain.News;
+import com.onepo.server.domain.news.News;
 import com.onepo.server.repository.NewsRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

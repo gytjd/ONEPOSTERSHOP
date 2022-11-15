@@ -1,25 +1,11 @@
 package com.onepo.server.repository;
 
-import com.onepo.server.domain.OrderItem;
-import com.onepo.server.domain.item.Item;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Repository;
+import com.onepo.server.domain.wish.Wish;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.ArrayList;
-import java.util.List;
+public interface WishRepository extends JpaRepository<Wish,Integer> {
 
-@Repository
-@RequiredArgsConstructor
-public class WishRepository {
-
-
-    private List<OrderItem> itemList=new ArrayList<>();
-
-    public void cart(OrderItem orderItem) {
-        itemList.add(orderItem);
-    }
-
-    public List<OrderItem> AllCart() {
-        return this.itemList;
-    }
- }
+    Wish findByMemberId(Long id);
+    Wish findWishById(Long id);
+    Wish findWishByMemberId(Long id);
+}

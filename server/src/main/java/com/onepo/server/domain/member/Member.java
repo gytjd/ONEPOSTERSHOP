@@ -1,8 +1,8 @@
-package com.onepo.server.domain;
+package com.onepo.server.domain.member;
 
+import com.onepo.server.domain.wish.Wish;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -31,9 +31,6 @@ public class Member {
     @Email
     private String email;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="WISH_ID")
-    private Wish wish;
 
     //회원등록 생성자
     public void register(String name, String userId, String password, String email) {

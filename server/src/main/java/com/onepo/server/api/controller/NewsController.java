@@ -1,7 +1,7 @@
 package com.onepo.server.api.controller;
 
 import com.onepo.server.api.dto.news.NewsCreateDto;
-import com.onepo.server.domain.News;
+import com.onepo.server.domain.news.News;
 import com.onepo.server.file.FileStore;
 import com.onepo.server.service.NewsService;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +14,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.util.List;
 
 @Controller
 @RequiredArgsConstructor

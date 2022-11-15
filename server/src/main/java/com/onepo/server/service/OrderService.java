@@ -6,12 +6,14 @@ import com.onepo.server.domain.item.Item;
 import com.onepo.server.domain.member.Member;
 import com.onepo.server.domain.order.Order;
 import com.onepo.server.domain.order.OrderItem;
-import com.onepo.server.repository.ItemRepository;
-import com.onepo.server.repository.MemberRepository;
-import com.onepo.server.repository.OrderRepository;
+import com.onepo.server.domain.wish.Wish;
+import com.onepo.server.domain.wish.WishItem;
+import com.onepo.server.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -19,8 +21,14 @@ import org.springframework.transaction.annotation.Transactional;
 public class OrderService {
 
     private final OrderRepository orderRepository;
+
+    private final OrderItemRepository orderItemRepository;
     private final MemberRepository memberRepository;
     private final ItemRepository itemRepository;
+
+    private final WishItemRepository wishItemRepository;
+
+    private final WishRepository wishRepository;
 
     @Transactional
     public Long order(Long memberId,Long itemId,Delivery delivery,int count) {
@@ -37,11 +45,18 @@ public class OrderService {
         return order.getId();
     }
 
-    @Transactional
-    public void cancelOrder(Long orderId) {
-        Order findOrder = orderRepository.findOne(orderId);
-        findOrder.cancel();
+
+    public List<OrderItem> findUserOrderItems(Long id) {
+        return orderItemRepository.findOrderItemsByMemberId(id);
     }
+
+    public OrderItem findOrderItem(Long orderItemid) {
+        return orderItemRepository.findOrderItemById(orderItemid);
+    }
+
+
+
+
 
 
 

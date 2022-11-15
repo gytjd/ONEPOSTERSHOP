@@ -1,20 +1,10 @@
 package com.onepo.server.service;
 
-import com.onepo.server.domain.delivery.Address;
-import com.onepo.server.domain.delivery.Delivery;
-import com.onepo.server.domain.delivery.DeliveryStatus;
-import com.onepo.server.domain.item.Item;
-import com.onepo.server.domain.member.Member;
-import com.onepo.server.domain.order.Order;
+
 import com.onepo.server.repository.OrderRepository;
-
-
-import org.junit.Assert;
-import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 

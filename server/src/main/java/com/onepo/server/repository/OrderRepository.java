@@ -1,24 +1,15 @@
 package com.onepo.server.repository;
 
-
 import com.onepo.server.domain.order.Order;
-import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.EntityManager;
+import java.util.List;
 
 @Repository
-@RequiredArgsConstructor
-public class OrderRepository {
+public interface OrderRepository extends JpaRepository<Order,Integer> {
 
-    private final EntityManager em;
+    List<Order> findOrdersByMemberId(int id);
 
-    public void save(Order order) {
-        em.persist(order);
-    }
-
-    public Order findOne(Long id){
-        return em.find(Order.class,id);
-    }
 
 }

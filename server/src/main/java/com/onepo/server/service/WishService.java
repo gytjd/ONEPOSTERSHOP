@@ -31,14 +31,15 @@ public class WishService {
     }
     @Transactional
     public Long addCart(Member member,Item item,int count) {
-        Wish wish = wishRepository.findByMemberId(member.getId());
 
-        if (wish==null) {
+        Wish wish = wishRepository.findByMemberId(member.getId()); // member 가 장바구니 한거 있나 확인
+
+        if (wish==null) { // 여기서 없으면 그냥 새로 만들어서 save
             wish=Wish.createCart(member);
             wishRepository.save(wish);
         }
 
-        Item findItem = itemRepository.findOne(item.getId());
+        Item findItem = itemRepository.findOne(item.getId()); // 아이템 찾고
         WishItem findWish = wishItemRepository.findByWishIdAndItemId(wish.getId(), findItem.getId());
 
 
@@ -60,5 +61,7 @@ public class WishService {
 
         return wish.getId();
     }
+
+
 
 }

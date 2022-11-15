@@ -74,7 +74,23 @@ public class WishServiceTest {
 
         Wish wishById = wishRepository.findWishById(findCartA);
 
-        Assert.assertEquals("주문",wishById.getMember(),2);
+        Assert.assertEquals("주문 한 사람 이름은 황효성",wishById.getMember().getName(),"황효성");
+
+        Member member2=new Member();
+        member2.register("이태곤","taegon1234","1234","taegon@gmail.com");
+        memberService.join(member2);
+
+        Delivery delivery2=new Delivery();
+        Address address2=new Address("대구시","달서구","용산동");
+        delivery2.setAddress(address2);
+        delivery2.setStatus(DeliveryStatus.READY);
+
+        Long aLong = wishService.addCart(member2, item2, 3);
+        Long aLong1 = wishService.addCart(member2, item3, 5);
+
+        Wish findWishA = wishRepository.findWishById(aLong);
+
+        Assert.assertEquals("주문 한 사람 이름은 이태곤",findWishA.getMember().getName(),"이태곤");
     }
 
 }

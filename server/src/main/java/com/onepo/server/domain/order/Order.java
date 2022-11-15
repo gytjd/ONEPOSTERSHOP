@@ -3,9 +3,8 @@ package com.onepo.server.domain.order;
 import com.onepo.server.domain.delivery.Delivery;
 import com.onepo.server.domain.delivery.DeliveryStatus;
 import com.onepo.server.domain.member.Member;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.onepo.server.domain.wish.Wish;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -13,6 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+@Builder
+@AllArgsConstructor
 @Entity
 @Getter
 @Setter
@@ -31,6 +32,10 @@ public class Order {
 
     @OneToMany(mappedBy = "order",cascade = CascadeType.ALL)
     private List<OrderItem> orderItems=new ArrayList<>();
+
+    @ManyToOne
+    @JoinColumn(name = "wish_wish_id")
+    private Wish wish;
 
     private LocalDateTime orderDate;
 
@@ -64,8 +69,6 @@ public class Order {
         this.orderItems.add(orderItem);
         orderItem.setOrder(this);
     }
-
-
 
     //생성 메소드
 

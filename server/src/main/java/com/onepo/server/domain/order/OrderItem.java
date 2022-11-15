@@ -1,12 +1,13 @@
 package com.onepo.server.domain.order;
 
 import com.onepo.server.domain.item.Item;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.onepo.server.domain.member.Member;
+import lombok.*;
 
 import javax.persistence.*;
 
+@Builder
+@AllArgsConstructor
 @Entity
 @Getter
 @Setter
@@ -25,6 +26,10 @@ public class OrderItem {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="ITEM_ID")
     private Item item;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="MEMBER_ID")
+    private Member member;
 
     private int orderPrice;
     private int count;

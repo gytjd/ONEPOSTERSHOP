@@ -155,5 +155,47 @@ public class WishServiceTest {
 
     }
 
+    @Test
+    @Rollback(value = false)
+    public void 장바구니취소() throws Exception {
+
+        Member member=new Member();
+        member.register("황효성","hys3396","1234","hys339631@gmail.com");
+        memberService.join(member);
+
+        Item item1=new Item();
+        item1.createArt("아이폰",50,10000,"보기 좋음");
+        itemService.saveItem(item1);
+
+        Item item2=new Item();
+        item2.createArt("아이패드",50,20000,"보기 좋음");
+        itemService.saveItem(item2);
+
+        Item item3=new Item();
+        item3.createArt("맥북",50,30000,"보기 좋음");
+        itemService.saveItem(item3);
+
+
+        Delivery delivery=new Delivery();
+        Address address=new Address("대구시","달서구","용산동");
+        delivery.setAddress(address);
+        delivery.setStatus(DeliveryStatus.READY);
+
+        Long findCartA = wishService.addCart(member, item1, 2);
+        Long findCartB = wishService.addCart(member, item2, 3);
+
+        Wish wishById = wishRepository.findWishById(findCartA);
+
+        Assert.assertEquals("장바구니 한 사람 이름은 황효성",wishById.getMember().getName(),"황효성");
+
+//        Long aLong = wishService.subCart(member, item1, 2);
+//        Long aLong1 = wishService.subCart(member, item2, 3);
+//
+//        Assert.assertEquals("item1 의 개수는 50",50,item1.getStockQuantity());
+//        Assert.assertEquals("황효성의 장바구니의 수는 이제 한개",1,wishService.findWishByMemberId(member.getId()).getCount());
+
+    }
+
+
 
 }

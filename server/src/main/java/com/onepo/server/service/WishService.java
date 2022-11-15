@@ -59,6 +59,29 @@ public class WishService {
         return wish.getId();
     }
 
+    @Transactional
+    public Long subCart(Member member,Item item,int count) {
+        Wish wish = findWishByMemberId(member.getId());
+
+        Item findItem = itemService.findOne(item.getId());
+        WishItem findWish = findByWishIdAndItemId(wish.getId(), findItem.getId());
+
+        if(findWish.getWishCount()<=count) {
+            wishItemRepository.delete(findWish);
+
+        }
+        else {
+            findWish.setWishCount(findWish.getWishCount()-count);
+        }
+
+
+        findItem.addStock(count);
+
+        return wish.getId();
+
+    }
+
+
 
     public WishItem updateWish(WishItem findWish,int count) {
         WishItem update=findWish;
@@ -100,6 +123,10 @@ public class WishService {
 
     public List<WishItem> findWishItemsByWishId(Long id) {
         return wishItemRepository.findWishItemsByWishId(id);
+    }
+
+    public List<WishItem> findAll() {
+        return wishItemRepository.findAll();
     }
 
 

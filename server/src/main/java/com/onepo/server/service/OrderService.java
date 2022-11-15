@@ -3,6 +3,9 @@ package com.onepo.server.service;
 
 import com.onepo.server.domain.*;
 import com.onepo.server.domain.item.Item;
+import com.onepo.server.domain.member.Member;
+import com.onepo.server.domain.order.Order;
+import com.onepo.server.domain.order.OrderItem;
 import com.onepo.server.repository.ItemRepository;
 import com.onepo.server.repository.MemberRepository;
 import com.onepo.server.repository.OrderRepository;
@@ -11,7 +14,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service

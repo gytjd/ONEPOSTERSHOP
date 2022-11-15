@@ -10,7 +10,8 @@
   </div>
   title: <span th:text="${news.title}">title</span><br/>
   content: <span th:text="${news.content}">content</span><br/>
-  <img th:src="|/images/${news.imageFiles}|" width="300" height="300"/>
+  <img th:src="|/images/${news.imageFiles}|" width="300" height="300"/><br><br>
+  작성일자: <span th:text="${news.localDateTime}"></span>
 </div> <!-- /container -->
 </body>
 </html>

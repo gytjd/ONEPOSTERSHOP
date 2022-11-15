@@ -1,7 +1,6 @@
 package com.onepo.server.repository;
 
-import com.onepo.server.domain.OrderItem;
-import com.onepo.server.domain.item.Item;
+import com.onepo.server.domain.order.OrderItem;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 

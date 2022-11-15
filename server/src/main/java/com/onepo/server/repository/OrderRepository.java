@@ -1,7 +1,7 @@
 package com.onepo.server.repository;
 
 
-import com.onepo.server.domain.Order;
+import com.onepo.server.domain.order.Order;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 

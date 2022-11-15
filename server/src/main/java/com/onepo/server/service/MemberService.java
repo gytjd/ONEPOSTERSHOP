@@ -1,7 +1,7 @@
 package com.onepo.server.service;
 
 
-import com.onepo.server.domain.Member;
+import com.onepo.server.domain.member.Member;
 import com.onepo.server.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -41,4 +41,15 @@ public class MemberService {
         return memberRepository.findAll();
     }
 
+    public Member findByUserId(String userId) {
+        List<Member> users = memberRepository.findByUserId(userId);
+        return users.get(0);
+    }
+
+    public Member authenticated(Member member, String password) {
+        if (member.getPassword().equals(password)) {
+            return member;
+        }
+        return null;
+    }
 }

@@ -2,6 +2,8 @@ package com.onepo.server.service;
 
 import com.onepo.server.domain.*;
 import com.onepo.server.domain.item.Item;
+import com.onepo.server.domain.member.Member;
+import com.onepo.server.domain.order.Order;
 import com.onepo.server.repository.OrderRepository;
 
 

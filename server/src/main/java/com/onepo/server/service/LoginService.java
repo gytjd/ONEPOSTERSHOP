@@ -1,6 +1,6 @@
 package com.onepo.server.service;
 
-import com.onepo.server.domain.Member;
+import com.onepo.server.domain.member.Member;
 import com.onepo.server.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

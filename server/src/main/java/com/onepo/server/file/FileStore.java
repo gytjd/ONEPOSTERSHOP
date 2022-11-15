@@ -20,6 +20,17 @@ public class FileStore {
         return fileDir + filename;
     }
 
+    public List<String> storeFiles(List<MultipartFile> multipartFiles)
+            throws IOException {
+        List<String> storeFileResult = new ArrayList<>();
+        for (MultipartFile multipartFile : multipartFiles) {
+            if (!multipartFile.isEmpty()) {
+                storeFileResult.add(storeFile(multipartFile));
+            }
+        }
+        return storeFileResult;
+    }
+
     public String storeFile(MultipartFile multipartFile) throws IOException
     {
         if (multipartFile.isEmpty()) {

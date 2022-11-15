@@ -14,5 +14,4 @@ public class MemberCreateDto {
     private String userId;
     private String password;
     private String email;
-
 }

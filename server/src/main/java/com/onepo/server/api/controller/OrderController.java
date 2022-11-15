@@ -3,7 +3,7 @@ package com.onepo.server.api.controller;
 import com.onepo.server.api.dto.order.OrderForm;
 import com.onepo.server.domain.Address;
 import com.onepo.server.domain.Delivery;
-import com.onepo.server.domain.Member;
+import com.onepo.server.domain.member.Member;
 import com.onepo.server.domain.item.Item;
 import com.onepo.server.service.ItemService;
 import com.onepo.server.service.MemberService;

@@ -10,6 +10,7 @@ import com.onepo.server.domain.wish.Wish;
 import com.onepo.server.domain.wish.WishItem;
 import com.onepo.server.repository.*;
 import lombok.RequiredArgsConstructor;
+import org.aspectj.weaver.ast.Or;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,19 +25,16 @@ public class OrderService {
     private final OrderRepository orderRepository;
 
     private final OrderItemRepository orderItemRepository;
-    private final MemberRepository memberRepository;
-
-    private final WishItemRepository wishItemRepository;
-
-    private final WishRepository wishRepository;
+    private final MemberService memberService;
+    private final WishService wishService;
 
     @Transactional
     public OrderItem addCartOrder(Long userId, Item item, WishItem wishItem) {
-        Member findMember = memberRepository.findOne(userId);
+        Member findMember = memberService.findOne(userId);
 
         OrderItem orderItem = OrderItem.createOrderItem(findMember,item,wishItem);
 
-        orderItemRepository.save(orderItem);
+        save_order_item(orderItem);
 
         return orderItem;
     }
@@ -45,15 +43,15 @@ public class OrderService {
     public Long addOrder(Member member, Wish wish, Delivery delivery, List<OrderItem> orderItemList) {
         Order order = Order.createOrder(member,wish, delivery, orderItemList);
 
-        orderRepository.save(order);
+        save_order(order);
 
         return order.getId();
     }
 
     @Transactional
     public Long order(Member member,Delivery delivery) {
-        Wish wishByMemberId = wishRepository.findWishByMemberId(member.getId());
-        List<WishItem> userWishList = wishItemRepository.findWishItemsByWishId(wishByMemberId.getId());
+        Wish wishByMemberId = wishService.findWishByMemberId(member.getId());
+        List<WishItem> userWishList = wishService.findWishItemsByWishId(wishByMemberId.getId());
 
         List<OrderItem> orderItemList = new ArrayList<>();
 
@@ -68,6 +66,22 @@ public class OrderService {
         Long orderId = addOrder(member, wishByMemberId,delivery, orderItemList);
 
         return orderId;
+    }
+
+    // OrderRepository Service
+
+    public void save_order(Order order) {
+        orderRepository.save(order);
+    }
+
+    // OrderItemRepository Service
+
+    public void save_order_item(OrderItem orderItem) {
+        orderItemRepository.save(orderItem);
+    }
+
+    public List<OrderItem> findAll() {
+        return orderItemRepository.findAll();
     }
 
 

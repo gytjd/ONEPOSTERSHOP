@@ -18,7 +18,7 @@ import java.util.List;
 public class WishService {
 
 
-    private final ItemRepository itemRepository;
+    private final ItemService itemService;
 
     private final WishItemRepository wishItemRepository;
 
@@ -41,7 +41,7 @@ public class WishService {
             save_wish(wish);
         }
 
-        Item findItem = itemRepository.findOne(item.getId()); // 아이템 찾고
+        Item findItem = itemService.findOne(item.getId()); // 아이템 찾고
         WishItem findWish = findByWishIdAndItemId(wish.getId(), findItem.getId());
 
 

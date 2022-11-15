@@ -1,17 +1,18 @@
 package com.onepo.server.service;
 
 
-import com.onepo.server.api.dto.order.Address;
-import com.onepo.server.domain.Member;
-import com.onepo.server.domain.Order;
-import com.onepo.server.domain.OrderItem;
+import com.onepo.server.domain.*;
 import com.onepo.server.domain.item.Item;
 import com.onepo.server.repository.ItemRepository;
 import com.onepo.server.repository.MemberRepository;
 import com.onepo.server.repository.OrderRepository;
+import com.onepo.server.repository.WishRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -21,18 +22,35 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final MemberRepository memberRepository;
     private final ItemRepository itemRepository;
+    private final WishRepository wishRepository;
 
     @Transactional
-    public Long order(Long memberId,Long itemId,Address address,int count) {
+    public Long order(Long memberId,Delivery delivery) {
+
         Member findMember = memberRepository.findOne(memberId);
-        Item findItem = itemRepository.findOne(itemId);
+        List<OrderItem> orderItems = wishRepository.AllCart();
 
-        OrderItem orderItem=OrderItem.createOrderItem(findItem,findItem.getPrice(),count);
-
-        Order order = Order.createOrder(findMember,address,orderItem);
+        Order order = Order.createOrder(findMember,delivery,orderItems);
 
         orderRepository.save(order);
 
         return order.getId();
     }
+
+    @Transactional
+    public void cancelOrder(Long orderId) {
+        Order findOrder = orderRepository.findOne(orderId);
+        findOrder.cancel();
+    }
+
+    public OrderItem cart(Long itemId,int count) {
+        Item findItem = itemRepository.findOne(itemId);
+        OrderItem orderItem = OrderItem.createOrderItem(findItem, findItem.getPrice(), count);
+
+        wishRepository.cart(orderItem);
+
+        return orderItem;
+    }
+
+
 }

@@ -1,4 +1,4 @@
-package com.onepo.server.api.dto.order;
+package com.onepo.server.domain;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

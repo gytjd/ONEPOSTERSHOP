@@ -46,4 +46,12 @@ public class OrderItem {
 
         return orderItem;
     }
+
+    public void cancel() {
+        getItem().addStock(count);
+    }
+
+    public int getTotalPrice() {
+        return getOrderPrice()*getCount();
+    }
 }

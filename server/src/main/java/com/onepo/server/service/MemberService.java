@@ -11,15 +11,17 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
 public class MemberService {
 
     private final MemberRepository memberRepository;
+    private final WishService wishService;
 
     //회원가입
+    @Transactional
     public Long join(Member member) {
         validateDuplicateUserId(member);    //아이디 중복 검사
         memberRepository.save(member);
+
         return member.getId();
     }
 

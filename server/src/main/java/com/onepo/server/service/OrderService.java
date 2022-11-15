@@ -1,19 +1,19 @@
 package com.onepo.server.service;
 
 
-import com.onepo.server.domain.*;
+import com.onepo.server.domain.delivery.Delivery;
 import com.onepo.server.domain.item.Item;
 import com.onepo.server.domain.member.Member;
 import com.onepo.server.domain.order.Order;
 import com.onepo.server.domain.order.OrderItem;
-import com.onepo.server.repository.ItemRepository;
-import com.onepo.server.repository.MemberRepository;
-import com.onepo.server.repository.OrderRepository;
-import com.onepo.server.repository.WishRepository;
+import com.onepo.server.domain.wish.Wish;
+import com.onepo.server.domain.wish.WishItem;
+import com.onepo.server.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -22,17 +22,28 @@ import java.util.List;
 public class OrderService {
 
     private final OrderRepository orderRepository;
+
+    private final OrderItemRepository orderItemRepository;
     private final MemberRepository memberRepository;
-    private final ItemRepository itemRepository;
+
+    private final WishItemRepository wishItemRepository;
+
     private final WishRepository wishRepository;
 
     @Transactional
-    public Long order(Long memberId,Delivery delivery) {
+    public OrderItem addCartOrder(Long userId, Item item, WishItem wishItem) {
+        Member findMember = memberRepository.findOne(userId);
 
-        Member findMember = memberRepository.findOne(memberId);
-        List<OrderItem> orderItems = wishRepository.AllCart();
+        OrderItem orderItem = OrderItem.createOrderItem(findMember,item,wishItem);
 
-        Order order = Order.createOrder(findMember,delivery,orderItems);
+        orderItemRepository.save(orderItem);
+
+        return orderItem;
+    }
+
+    @Transactional
+    public Long addOrder(Member member, Wish wish, Delivery delivery, List<OrderItem> orderItemList) {
+        Order order = Order.createOrder(member,wish, delivery, orderItemList);
 
         orderRepository.save(order);
 
@@ -40,18 +51,23 @@ public class OrderService {
     }
 
     @Transactional
-    public void cancelOrder(Long orderId) {
-        Order findOrder = orderRepository.findOne(orderId);
-        findOrder.cancel();
-    }
+    public Long order(Member member,Delivery delivery) {
+        Wish wishByMemberId = wishRepository.findWishByMemberId(member.getId());
+        List<WishItem> userWishList = wishItemRepository.findWishItemsByWishId(wishByMemberId.getId());
 
-    public OrderItem cart(Long itemId,int count) {
-        Item findItem = itemRepository.findOne(itemId);
-        OrderItem orderItem = OrderItem.createOrderItem(findItem, findItem.getPrice(), count);
+        List<OrderItem> orderItemList = new ArrayList<>();
 
-        wishRepository.cart(orderItem);
+        for (WishItem wishItem : userWishList) {
+            OrderItem orderItem = addCartOrder(member.getId(),
+                    wishItem.getItem(),
+                    wishItem);
 
-        return orderItem;
+            orderItemList.add(orderItem);
+        }
+
+        Long orderId = addOrder(member, wishByMemberId,delivery, orderItemList);
+
+        return orderId;
     }
 
 

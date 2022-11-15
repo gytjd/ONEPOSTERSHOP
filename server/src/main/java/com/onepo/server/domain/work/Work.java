@@ -22,5 +22,4 @@ public class Work {
 
     private String description;
 
-    private List<String> imageFiles = new ArrayList<String>();
 }

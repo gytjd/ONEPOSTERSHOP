@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface WishItemRepository extends JpaRepository<WishItem,Integer> {
 
-    WishItem finByWishIdAndItemId(Long wishId,Long itemId);
+    WishItem findByWishIdAndItemId(Long wishId,Long itemId);
     WishItem findWishItemById(Long id);
     List<WishItem> findWishItemByItemId(Long id);
 }

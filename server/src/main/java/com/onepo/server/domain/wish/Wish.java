@@ -2,15 +2,16 @@ package com.onepo.server.domain.wish;
 
 import com.onepo.server.domain.member.Member;
 import com.onepo.server.domain.order.OrderItem;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+@Builder
+@AllArgsConstructor
 @Entity
 @Getter
 @Setter
@@ -31,6 +32,7 @@ public class Wish {
     @OneToMany(mappedBy = "wish",cascade = CascadeType.ALL)
     private List<WishItem> wishItemList = new ArrayList<>();
 
+    @DateTimeFormat(pattern = "yyyy-mm-dd")
     private LocalDateTime localDateTime;
 
     public Wish(Member member) {
@@ -40,7 +42,7 @@ public class Wish {
 
     public static Wish createCart(Member member) {
         Wish wish=new Wish(member);
-
+        wish.setCount(0);
         return wish;
     }
 

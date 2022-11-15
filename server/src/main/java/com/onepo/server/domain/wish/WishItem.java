@@ -2,13 +2,13 @@ package com.onepo.server.domain.wish;
 
 
 import com.onepo.server.domain.item.Item;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.yaml.snakeyaml.tokens.FlowEntryToken;
 
 import javax.persistence.*;
 
+@Builder
+@AllArgsConstructor
 @Entity
 @Getter
 @Setter
@@ -49,6 +49,10 @@ public class WishItem {
 
     public void addCount(int count) {
         this.wishCount+=count;
+    }
+    
+    public void subCount(int count) {
+        this.wishCount-=count;
     }
 
 }

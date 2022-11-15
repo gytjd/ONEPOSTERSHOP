@@ -13,7 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
 public class WishService {
 
 
@@ -31,7 +30,7 @@ public class WishService {
 
     }
     @Transactional
-    public void addCart(Member member,Item item,int count) {
+    public Long addCart(Member member,Item item,int count) {
         Wish wish = wishRepository.findByMemberId(member.getId());
 
         if (wish==null) {
@@ -40,7 +39,8 @@ public class WishService {
         }
 
         Item findItem = itemRepository.findOne(item.getId());
-        WishItem findWish = wishItemRepository.finByWishIdAndItemId(wish.getId(),item.getId());
+        WishItem findWish = wishItemRepository.findByWishIdAndItemId(wish.getId(), findItem.getId());
+
 
         if (findWish == null) {
             findWish=WishItem.cartItem(wish,item,count);
@@ -57,6 +57,8 @@ public class WishService {
         }
 
         wish.setCount(wish.getCount()+count);
+
+        return wish.getId();
     }
 
 }

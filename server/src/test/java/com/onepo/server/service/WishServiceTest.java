@@ -4,10 +4,13 @@ import com.onepo.server.domain.delivery.Delivery;
 import com.onepo.server.domain.delivery.DeliveryStatus;
 import com.onepo.server.domain.item.Item;
 import com.onepo.server.domain.member.Member;
+import com.onepo.server.domain.wish.Wish;
 import com.onepo.server.repository.WishItemRepository;
 import com.onepo.server.domain.delivery.Address;
 
 
+import com.onepo.server.repository.WishRepository;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +33,8 @@ public class WishServiceTest {
     WishService wishService;
 
     @Autowired
+    ItemService itemService;
+    @Autowired
     MemberService memberService;
 
     @Autowired
@@ -44,19 +49,19 @@ public class WishServiceTest {
 
         Member member=new Member();
         member.register("황효성","hys3396","1234","hys339631@gmail.com");
-        em.persist(member);
+        memberService.join(member);
 
         Item item1=new Item();
         item1.createArt("아이폰",50,10000,"보기 좋음");
-        em.persist(item1);
+        itemService.saveItem(item1);
 
         Item item2=new Item();
         item2.createArt("아이패드",50,20000,"보기 좋음");
-        em.persist(item2);
+        itemService.saveItem(item2);
 
         Item item3=new Item();
         item3.createArt("맥북",50,30000,"보기 좋음");
-        em.persist(item3);
+        itemService.saveItem(item3);
 
 
         Delivery delivery=new Delivery();
@@ -64,8 +69,12 @@ public class WishServiceTest {
         delivery.setAddress(address);
         delivery.setStatus(DeliveryStatus.READY);
 
-        wishService.addCart(member,item1,2);
-        wishService.addCart(member,item2,3);
+        Long findCartA = wishService.addCart(member, item1, 2);
+        Long findCartB = wishService.addCart(member, item2, 3);
+
+        Wish wishById = wishRepository.findWishById(findCartA);
+
+        Assert.assertEquals("주문",wishById.getMember(),2);
     }
 
 }

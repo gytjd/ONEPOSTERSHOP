@@ -1,6 +1,13 @@
 package com.onepo.server.service;
 
+<<<<<<< HEAD
 
+=======
+import com.onepo.server.domain.*;
+import com.onepo.server.domain.item.Item;
+import com.onepo.server.domain.member.Member;
+import com.onepo.server.domain.order.Order;
+>>>>>>> origin/main
 import com.onepo.server.repository.OrderRepository;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

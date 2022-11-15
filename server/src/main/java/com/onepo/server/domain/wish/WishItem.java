@@ -2,6 +2,7 @@ package com.onepo.server.domain.wish;
 
 
 import com.onepo.server.domain.item.Item;
+<<<<<<< HEAD
 import lombok.*;
 import org.yaml.snakeyaml.tokens.FlowEntryToken;
 
@@ -13,6 +14,14 @@ import javax.persistence.*;
 @Getter
 @Setter
 @NoArgsConstructor
+=======
+import lombok.Getter;
+
+import javax.persistence.*;
+
+@Entity
+@Getter
+>>>>>>> origin/main
 public class WishItem {
 
     @Id
@@ -27,6 +36,7 @@ public class WishItem {
     @ManyToOne
     @JoinColumn(name="ITEM_ID")
     private Item item;
+<<<<<<< HEAD
     private int wishCount;
 
     public WishItem(Wish wish, Item item,int wishCount) {
@@ -55,4 +65,6 @@ public class WishItem {
         this.wishCount-=count;
     }
 
+=======
+>>>>>>> origin/main
 }

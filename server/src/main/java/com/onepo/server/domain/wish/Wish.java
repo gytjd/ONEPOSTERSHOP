@@ -1,6 +1,7 @@
 package com.onepo.server.domain.wish;
 
 import com.onepo.server.domain.member.Member;
+<<<<<<< HEAD
 import com.onepo.server.domain.order.OrderItem;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -16,6 +17,14 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
+=======
+import lombok.Getter;
+
+import javax.persistence.*;
+
+@Entity
+@Getter
+>>>>>>> origin/main
 public class Wish {
 
     @Id
@@ -23,6 +32,7 @@ public class Wish {
     @Column(name="WISH_ID")
     private Long id;
 
+<<<<<<< HEAD
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="MEMBER_ID")
     private Member member;
@@ -45,5 +55,9 @@ public class Wish {
     }
 
 
+=======
+    //@OneToOne(mappedBy = "wish",fetch = FetchType.LAZY)
+    //private Member member;
+>>>>>>> origin/main
 
 }

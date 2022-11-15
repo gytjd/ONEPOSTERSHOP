@@ -1,6 +1,10 @@
 package com.onepo.server.service;
 
 import com.onepo.server.domain.member.Member;
+<<<<<<< HEAD
+=======
+import org.assertj.core.api.Assertions;
+>>>>>>> origin/main
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -41,5 +45,15 @@ public class MemberServiceTest {
         memberService.join(member2);    //예외 발생 시점
 
         Assert.fail("예외 발생");
+    }
+
+    @Test
+    public void 로그인() throws Exception {
+        Member member = new Member();
+        member.register("taegon", "taegon1998","123", "taegon1998@gmail.com");
+
+        Member findMember = memberService.authenticated(member, "123");
+
+        Assertions.assertThat(member).isEqualTo(findMember);
     }
 }

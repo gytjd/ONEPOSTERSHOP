@@ -44,4 +44,15 @@ public class MemberService {
         return memberRepository.findAll();
     }
 
+    public Member findByUserId(String userId) {
+        List<Member> users = memberRepository.findByUserId(userId);
+        return users.get(0);
+    }
+
+    public Member authenticated(Member member, String password) {
+        if (member.getPassword().equals(password)) {
+            return member;
+        }
+        return null;
+    }
 }

@@ -63,10 +63,6 @@ public class Order {
 
     // 편의 메소드
 
-    public void setMember(Member member) {
-        this.member=member;
-    }
-
     public void addOrderItem(OrderItem orderItem) {
         this.orderItems.add(orderItem);
         orderItem.setOrder(this);

@@ -43,11 +43,13 @@ public class OrderItem {
 
 
 
+    // 장바구니 주문
     public static OrderItem createOrderItem(Member member,Item item,WishItem wishItem) {
         OrderItem orderItem = new OrderItem();
 
         orderItem.setMember(member);
         orderItem.setItem(item);
+
         orderItem.setWishItem(wishItem);
         orderItem.setOrderPrice(wishItem.getItem().getPrice());
         orderItem.setCount(wishItem.getWishCount());
@@ -56,29 +58,20 @@ public class OrderItem {
         return orderItem;
     }
 
-    public OrderItem(Item item, int orderPrice, int count) {
-        this.item = item;
-        this.orderPrice = orderPrice;
-        this.count = count;
-    }
+    //개별 주문
 
-    // 생성 메소드
+    public static OrderItem createOrderItem(Member member,Item item,int count) {
+        OrderItem orderItem = new OrderItem();
 
-    public static OrderItem createOrderItem(Item item,int orderPrice,int count)
-    {
-        OrderItem orderItem=new OrderItem(item,orderPrice,count);
+        orderItem.setMember(member);
+        orderItem.setItem(item);
 
-        item.removeStock(count);
+        orderItem.setWishItem(null);
+        orderItem.setOrderPrice(item.getPrice());
+        orderItem.setCount(count);
+        orderItem.setTotalPrice(item.getPrice()*count);
 
         return orderItem;
     }
 
-
-    public void cancel() {
-        getItem().addStock(count);
-    }
-
-    public int getTotalPrice() {
-        return getOrderPrice()*getCount();
-    }
 }

@@ -151,9 +151,46 @@ public class WishServiceTest {
 
         Assert.assertEquals("장바구니 한 사람 이름은 이태곤",findWishA.getMember().getName(),"이태곤");
 
-        Long order = orderService.order(member, delivery);
+        Long order = orderService.order_cart(member, delivery);
 
     }
+
+    @Test
+    @Rollback(value = false)
+    public void 장바구니취소() throws Exception {
+
+        Member member=new Member();
+        member.register("황효성","hys3396","1234","hys339631@gmail.com");
+        memberService.join(member);
+
+        Item item1=new Item();
+        item1.createArt("아이폰",50,10000,"보기 좋음");
+        itemService.saveItem(item1);
+
+        Item item2=new Item();
+        item2.createArt("아이패드",50,20000,"보기 좋음");
+        itemService.saveItem(item2);
+
+        Item item3=new Item();
+        item3.createArt("맥북",50,30000,"보기 좋음");
+        itemService.saveItem(item3);
+
+
+        Delivery delivery=new Delivery();
+        Address address=new Address("대구시","달서구","용산동");
+        delivery.setAddress(address);
+        delivery.setStatus(DeliveryStatus.READY);
+
+        Long findCartA = wishService.addCart(member, item1, 10);
+        Long findCartB = wishService.addCart(member, item2, 10);
+
+        Wish wishById = wishRepository.findWishById(findCartA);
+
+        Assert.assertEquals("장바구니 한 사람 이름은 황효성",wishById.getMember().getName(),"황효성");
+
+        wishService.cancelCart(member);
+    }
+
 
 
 }

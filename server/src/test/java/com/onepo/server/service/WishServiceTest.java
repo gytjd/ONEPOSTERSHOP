@@ -187,11 +187,8 @@ public class WishServiceTest {
         Wish wishById = wishRepository.findWishById(findCartA);
 
         Assert.assertEquals("장바구니 한 사람 이름은 황효성",wishById.getMember().getName(),"황효성");
-//
-        Long aLong = wishService.subCart(member, item1, 10);
-        Long bLong = wishService.subCart(member,item2,10);
-//
 
+        wishService.cancelCart(member);
     }
 
 

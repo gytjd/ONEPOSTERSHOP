@@ -55,7 +55,7 @@ public class WishService {
             save_wish_Item(update);
         }
 
-        wish.setCount(wish.getCount()+count);
+        wish.addCount(count);
 
         return wish.getId();
     }
@@ -94,10 +94,26 @@ public class WishService {
 
     }
 
+
+    @Transactional
+    public void cancelCart(Member member) {
+        Wish findWish = findWishByMemberId(member.getId());
+        List<WishItem> items = findWishItemsByWishId(findWish.getId());
+
+        for (WishItem wishItem:items) {
+
+            Item item = wishItem.getItem();
+            item.addStock(wishItem.getWishCount());
+
+            wishItemRepository.delete(wishItem);
+        }
+
+        wishRepository.delete(findWish);
+    }
+
     public List<WishItem> findWishList(Long id) {
         return findWishItemsByWishId(id);
     }
-
 
 
     public WishItem updateWish(WishItem findWish,int count) {
@@ -127,6 +143,10 @@ public class WishService {
     public Wish findWishByMemberId(Long id) {
         return wishRepository.findWishByMemberId(id);
     }
+
+
+
+
 
     // WishItemRepository Service
 

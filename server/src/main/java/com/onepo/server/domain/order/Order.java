@@ -2,9 +2,11 @@ package com.onepo.server.domain.order;
 
 import com.onepo.server.domain.delivery.Delivery;
 import com.onepo.server.domain.delivery.DeliveryStatus;
+import com.onepo.server.domain.item.Item;
 import com.onepo.server.domain.member.Member;
 import com.onepo.server.domain.wish.Wish;
 import lombok.*;
+import org.aspectj.weaver.ast.Or;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -37,7 +39,7 @@ public class Order {
     @JoinColumn(name = "WISH_ID")
     private Wish wish;
 
-    @DateTimeFormat(pattern = "yyyy-mm-dd")
+    @DateTimeFormat(pattern = "yyyy-mm-dd-hh-mm-ss")
     private LocalDateTime orderDate;
 
     @Enumerated(EnumType.STRING)
@@ -48,6 +50,8 @@ public class Order {
     @JoinColumn(name="DELIVERY_ID")
     private Delivery delivery;
 
+
+    // 장바구니 주문
 
     public Order(Member member, Wish wish,LocalDateTime orderDate, OrderStatus orderStatus, Delivery delivery,List<OrderItem> orderItems) {
         this.member = member;
@@ -61,6 +65,21 @@ public class Order {
         }
     }
 
+    public Order(Member member,LocalDateTime orderDate,OrderStatus orderStatus,Delivery delivery,List<OrderItem> orderItems) {
+        this.member=member;
+        this.orderDate=orderDate;
+        this.orderStatus=orderStatus;
+        this.delivery=delivery;
+
+        for (OrderItem orderItem: orderItems) {
+            this.addOrderItem(orderItem);
+        }
+
+    }
+
+
+
+
     // 편의 메소드
 
     public void addOrderItem(OrderItem orderItem) {
@@ -70,6 +89,8 @@ public class Order {
 
     //생성 메소드
 
+
+    // 장바구니 주문
     public static Order createOrder(Member member,Wish wish,Delivery delivery,List<OrderItem> orderItems) {
 
         Order order=new Order(member,wish,LocalDateTime.now(),OrderStatus.ORDER,delivery,orderItems);
@@ -77,8 +98,12 @@ public class Order {
         return order;
     }
 
+    public static Order createOrder(Member member,Delivery delivery,List<OrderItem> orderItem) {
 
+        Order order=new Order(member,LocalDateTime.now(),OrderStatus.ORDER,delivery,orderItem);
 
+        return order;
+    }
 
 
 }

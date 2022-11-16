@@ -151,7 +151,7 @@ public class WishServiceTest {
 
         Assert.assertEquals("장바구니 한 사람 이름은 이태곤",findWishA.getMember().getName(),"이태곤");
 
-        Long order = orderService.order(member, delivery);
+        Long order = orderService.order_cart(member, delivery);
 
     }
 

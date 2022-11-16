@@ -28,6 +28,16 @@ public class OrderService {
     private final MemberService memberService;
     private final WishService wishService;
 
+
+    /**
+     *
+     * @param userId
+     * @param item
+     * @param wishItem
+     * @return
+     * // 장바구니 주문
+     */
+
     @Transactional
     public OrderItem addCartOrder(Long userId, Item item, WishItem wishItem) {
         Member findMember = memberService.findOne(userId);
@@ -49,7 +59,7 @@ public class OrderService {
     }
 
     @Transactional
-    public Long order(Member member,Delivery delivery) {
+    public Long order_cart(Member member,Delivery delivery) { // 장바구니 주문
         Wish wishByMemberId = wishService.findWishByMemberId(member.getId());
         List<WishItem> userWishList = wishService.findWishItemsByWishId(wishByMemberId.getId());
 
@@ -67,6 +77,51 @@ public class OrderService {
 
         return orderId;
     }
+
+
+    /**
+     *
+     *
+     * 개별 주문
+     */
+
+
+    @Transactional
+    public OrderItem add_OrderOne(Long userId, Item item,int count) {
+        Member findMember = memberService.findOne(userId);
+
+        OrderItem orderItem = OrderItem.createOrderItem(findMember,item,count);
+
+        item.removeStock(count);
+
+        save_order_item(orderItem);
+
+        return orderItem;
+    }
+
+    @Transactional
+    public Long Order_one(Member member,Delivery delivery, List<OrderItem> orderItemList) {
+        Order order = Order.createOrder(member, delivery, orderItemList);
+
+        save_order(order);
+
+        return order.getId();
+    }
+
+
+    @Transactional
+    public Long order_one(Member member,Delivery delivery,Item item,int count) {
+        OrderItem createOrderOne = add_OrderOne(member.getId(), item, count);
+
+        List<OrderItem> orderItem=new ArrayList<>();
+        orderItem.add(createOrderOne);
+
+        Long orderId = Order_one(member, delivery, orderItem);
+
+        return orderId;
+    }
+
+
 
     // OrderRepository Service
 

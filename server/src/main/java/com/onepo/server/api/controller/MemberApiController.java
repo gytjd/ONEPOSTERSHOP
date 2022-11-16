@@ -1,7 +1,6 @@
 package com.onepo.server.api.controller;
 
 import com.onepo.server.api.dto.member.MemberCreateDto;
-import com.onepo.server.api.dto.member.MemberCreateResponse;
 import com.onepo.server.api.dto.member.MemberLoginDto;
 import com.onepo.server.api.dto.member.MemberLoginResponse;
 import com.onepo.server.domain.member.Member;
@@ -28,7 +27,7 @@ public class MemberApiController {
     }
 
     @PostMapping("/createMember")
-    public MemberCreateResponse create(@Validated @RequestBody MemberCreateDto dto, BindingResult bindingResult) {
+    public String create(@Validated @RequestBody MemberCreateDto dto, BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()) {
             return null;
@@ -38,7 +37,7 @@ public class MemberApiController {
         member.register(dto.getName(), dto.getUserId(), dto.getPassword(), dto.getEmail());
         memberService.join(member);
 
-        return new MemberCreateResponse(member);
+        return "redirect:/login";
     }
 
     @GetMapping("/login")
@@ -64,11 +63,11 @@ public class MemberApiController {
         return new MemberLoginResponse(member);
     }
 
-    /*@PostMapping("/logout")
+    @PostMapping("/logout")
     public void logout(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
         if (session != null) {
             session.invalidate();
         }
-    }*/
+    }
 }

@@ -4,6 +4,7 @@ import com.onepo.server.domain.item.Item;
 import com.onepo.server.domain.member.Member;
 import com.onepo.server.domain.wish.Wish;
 import com.onepo.server.domain.wish.WishItem;
+import com.onepo.server.exception.NotExistCartException;
 import com.onepo.server.repository.ItemRepository;
 import com.onepo.server.repository.WishItemRepository;
 import com.onepo.server.repository.WishRepository;
@@ -63,22 +64,38 @@ public class WishService {
     public Long subCart(Member member,Item item,int count) {
         Wish wish = findWishByMemberId(member.getId());
 
-        Item findItem = itemService.findOne(item.getId());
-        WishItem findWish = findByWishIdAndItemId(wish.getId(), findItem.getId());
+        if (wish==null) {
+            throw new NotExistCartException();
+        } else {
+            Item findItem = itemService.findOne(item.getId());
+            WishItem findWish = findByWishIdAndItemId(wish.getId(), findItem.getId());
 
-        if(findWish.getWishCount()<=count) {
-            wishItemRepository.delete(findWish);
+            if(findWish.getWishCount()<=count) {
+                if(findWish.getWishCount()<count) {
+                    throw new NotExistCartException();
+                }
+                else {
+                    wishItemRepository.delete(findWish);
+                }
+            }
+            else {
+                findWish.subCount(count);
+            }
 
+            wish.subCount(count);
+            findItem.addStock(count);
+
+            if(wish.getCount()==0) {
+                wishRepository.delete(wish);
+            }
+
+            return wish.getId();
         }
-        else {
-            findWish.setWishCount(findWish.getWishCount()-count);
-        }
 
+    }
 
-        findItem.addStock(count);
-
-        return wish.getId();
-
+    public List<WishItem> findWishList(Long id) {
+        return findWishItemsByWishId(id);
     }
 
 
@@ -128,6 +145,7 @@ public class WishService {
     public List<WishItem> findAll() {
         return wishItemRepository.findAll();
     }
+
 
 
 

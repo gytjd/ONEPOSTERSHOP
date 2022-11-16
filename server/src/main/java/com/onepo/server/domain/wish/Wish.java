@@ -44,5 +44,13 @@ public class Wish {
         return wish;
     }
 
+    public void addCount(int count) {
+        this.count+=count;
+    }
+
+    public void subCount(int count) {
+        this.count-=count;
+    }
+
 
 }

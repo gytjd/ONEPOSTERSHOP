@@ -181,18 +181,16 @@ public class WishServiceTest {
         delivery.setAddress(address);
         delivery.setStatus(DeliveryStatus.READY);
 
-        Long findCartA = wishService.addCart(member, item1, 2);
-        Long findCartB = wishService.addCart(member, item2, 3);
+        Long findCartA = wishService.addCart(member, item1, 10);
+        Long findCartB = wishService.addCart(member, item2, 10);
 
         Wish wishById = wishRepository.findWishById(findCartA);
 
         Assert.assertEquals("장바구니 한 사람 이름은 황효성",wishById.getMember().getName(),"황효성");
-
-//        Long aLong = wishService.subCart(member, item1, 2);
-//        Long aLong1 = wishService.subCart(member, item2, 3);
 //
-//        Assert.assertEquals("item1 의 개수는 50",50,item1.getStockQuantity());
-//        Assert.assertEquals("황효성의 장바구니의 수는 이제 한개",1,wishService.findWishByMemberId(member.getId()).getCount());
+        Long aLong = wishService.subCart(member, item1, 10);
+        Long bLong = wishService.subCart(member,item2,10);
+//
 
     }
 

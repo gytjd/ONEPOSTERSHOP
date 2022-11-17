@@ -15,13 +15,9 @@ public class Work {
     @Id
     @GeneratedValue
     private Long id;
-
     private String author;
-
-    private String name;
-
+    private String title;
     private String description;
-
     @ElementCollection
     private List<String> imageFiles;
 

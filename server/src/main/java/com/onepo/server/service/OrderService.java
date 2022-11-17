@@ -2,12 +2,15 @@ package com.onepo.server.service;
 
 
 import com.onepo.server.domain.delivery.Delivery;
+import com.onepo.server.domain.delivery.DeliveryStatus;
 import com.onepo.server.domain.item.Item;
 import com.onepo.server.domain.member.Member;
 import com.onepo.server.domain.order.Order;
 import com.onepo.server.domain.order.OrderItem;
 import com.onepo.server.domain.wish.Wish;
 import com.onepo.server.domain.wish.WishItem;
+import com.onepo.server.exception.AlreadyDeliveredException;
+import com.onepo.server.exception.NotPermitException;
 import com.onepo.server.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.aspectj.weaver.ast.Or;
@@ -39,7 +42,7 @@ public class OrderService {
      */
 
     @Transactional
-    public OrderItem addCartOrder(Long userId, Item item, WishItem wishItem) {
+    public OrderItem add_Wish_Item(Long userId, Item item, WishItem wishItem) {
         Member findMember = memberService.findOne(userId);
 
         OrderItem orderItem = OrderItem.createOrderItem(findMember,item,wishItem);
@@ -50,7 +53,7 @@ public class OrderService {
     }
 
     @Transactional
-    public Long addOrder(Member member, Wish wish, Delivery delivery, List<OrderItem> orderItemList) {
+    public Long add_Wish_Order(Member member, Wish wish, Delivery delivery, List<OrderItem> orderItemList) {
         Order order = Order.createOrder(member,wish, delivery, orderItemList);
 
         save_order(order);
@@ -59,21 +62,21 @@ public class OrderService {
     }
 
     @Transactional
-    public Long order_cart(Member member,Delivery delivery) { // 장바구니 주문
+    public Long order_Wish(Member member,Delivery delivery) { // 장바구니 주문
         Wish wishByMemberId = wishService.findWishByMemberId(member.getId());
         List<WishItem> userWishList = wishService.findWishItemsByWishId(wishByMemberId.getId());
 
         List<OrderItem> orderItemList = new ArrayList<>();
 
         for (WishItem wishItem : userWishList) {
-            OrderItem orderItem = addCartOrder(member.getId(),
+            OrderItem orderItem = add_Wish_Item(member.getId(),
                     wishItem.getItem(),
                     wishItem);
 
             orderItemList.add(orderItem);
         }
 
-        Long orderId = addOrder(member, wishByMemberId,delivery, orderItemList);
+        Long orderId = add_Wish_Order(member, wishByMemberId,delivery, orderItemList);
 
         return orderId;
     }
@@ -87,7 +90,7 @@ public class OrderService {
 
 
     @Transactional
-    public OrderItem add_OrderOne(Long userId, Item item,int count) {
+    public OrderItem add_One_Item(Long userId, Item item,int count) {
         Member findMember = memberService.findOne(userId);
 
         OrderItem orderItem = OrderItem.createOrderItem(findMember,item,count);
@@ -100,7 +103,7 @@ public class OrderService {
     }
 
     @Transactional
-    public Long Order_one(Member member,Delivery delivery, List<OrderItem> orderItemList) {
+    public Long add_One_Order(Member member,Delivery delivery, List<OrderItem> orderItemList) {
         Order order = Order.createOrder(member, delivery, orderItemList);
 
         save_order(order);
@@ -110,26 +113,81 @@ public class OrderService {
 
 
     @Transactional
-    public Long order_one(Member member,Delivery delivery,Item item,int count) {
-        OrderItem createOrderOne = add_OrderOne(member.getId(), item, count);
+    public Long order_One(Member member,Delivery delivery,Item item,int count) {
+        OrderItem createOrderOne = add_One_Item(member.getId(), item, count);
 
         List<OrderItem> orderItem=new ArrayList<>();
         orderItem.add(createOrderOne);
 
-        Long orderId = Order_one(member, delivery, orderItem);
+        Long orderId = add_One_Order(member, delivery, orderItem);
 
         return orderId;
     }
 
+    /**
+     *
+     *
+     * 공통 Service
+     */
+
+    @Transactional
+    public void order_Cancel(Member member,Long orderId) {
+        Order order = findOrderByMemberIdAndId(member.getId(), orderId);
+
+        if(order.getMember().getId()!=member.getId()) {
+            throw new NotPermitException();
+        }
+
+        if(order.getDelivery().getStatus()== DeliveryStatus.COMP) {
+            throw new AlreadyDeliveredException();
+        }
+        else {
+            List<OrderItem> orderItems = findOrderItemsByOrderId(order.getId());
+
+            for(OrderItem orderItem : orderItems) {
+
+                Item item = orderItem.getItem();
+                item.addStock(orderItem.getCount());
+
+                orderItemRepository.delete(orderItem);
+            }
+
+            orderRepository.delete(order);
+        }
+
+    }
+
+    public List<Order> order_list(Member member) { // 사용자가 주문한 전체 주문 확인
+        return findOrdersByMemberId(member.getId());
+    }
 
 
-    // OrderRepository Service
+    /**
+     *
+      * OrderRepository Service
+     */
 
     public void save_order(Order order) {
         orderRepository.save(order);
     }
 
-    // OrderItemRepository Service
+    public List<Order> findOrdersByMemberId(Long id) {
+        return orderRepository.findOrdersByMemberId(id);
+    }
+
+    public Order findOrderByMemberId(Long id) {
+        return orderRepository.findOrderByMemberId(id);
+    }
+
+    public Order findOrderByMemberIdAndId(Long memberId,Long orderId) {
+        return orderRepository.findOrderByMemberIdAndId(memberId,orderId);
+    }
+
+
+    /**
+     *
+     * OrderItemRepository Service
+     */
 
     public void save_order_item(OrderItem orderItem) {
         orderItemRepository.save(orderItem);
@@ -138,6 +196,11 @@ public class OrderService {
     public List<OrderItem> findAll() {
         return orderItemRepository.findAll();
     }
+
+    public List<OrderItem> findOrderItemsByOrderId(Long id) {
+        return orderItemRepository.findOrderItemsByOrderId(id);
+    }
+
 
 
 }

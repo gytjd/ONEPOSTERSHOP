@@ -58,6 +58,6 @@ public class OrderServiceTest {
         delivery.setStatus(DeliveryStatus.READY);
 
 
-        orderService.order_one(member, delivery, item1, 13);
+        orderService.order_One(member, delivery, item1, 13);
     }
 }

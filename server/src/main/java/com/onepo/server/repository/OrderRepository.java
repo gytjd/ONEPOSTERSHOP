@@ -12,7 +12,12 @@ public interface OrderRepository extends JpaRepository<Order,Integer> {
 
     List<Order> findOrdersByMemberId(Long id);
 
+
     Order findOrderById(Long id);
+
+    Order findOrderByMemberId(Long id);
+
+    Order findOrderByMemberIdAndId(Long memberId,Long orderId);
 
 
 }

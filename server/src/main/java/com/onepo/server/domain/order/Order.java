@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-@AllArgsConstructor
 @Entity
 @Getter
 @Setter
@@ -53,7 +52,7 @@ public class Order {
 
     // 장바구니 주문
 
-    public Order(Member member, Wish wish,LocalDateTime orderDate, OrderStatus orderStatus, Delivery delivery,List<OrderItem> orderItems) {
+    public Order(Member member,Wish wish,LocalDateTime orderDate, OrderStatus orderStatus, Delivery delivery,List<OrderItem> orderItems) {
         this.member = member;
         this.wish=wish;
         this.orderDate = orderDate;
@@ -76,9 +75,6 @@ public class Order {
         }
 
     }
-
-
-
 
     // 편의 메소드
 

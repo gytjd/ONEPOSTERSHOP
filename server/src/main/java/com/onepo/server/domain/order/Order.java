@@ -41,6 +41,8 @@ public class Order {
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
 
+    private int TotalPrice;
+
 
     @OneToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     @JoinColumn(name="DELIVERY_ID")
@@ -55,9 +57,14 @@ public class Order {
         this.orderStatus = orderStatus;
         this.delivery=delivery;
 
+
+        int tempPrice=0;
         for (OrderItem orderItem: orderItems) {
             this.addOrderItem(orderItem);
+            tempPrice+= orderItem.getTotalPrice();
         }
+
+        this.TotalPrice=tempPrice;
     }
 
 
@@ -79,6 +86,7 @@ public class Order {
 
         return order;
     }
+
 
 
 }

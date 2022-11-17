@@ -83,7 +83,6 @@ public class WishService {
             }
 
             wish.subCount(count);
-            findItem.addStock(count);
 
             if(wish.getCount()==0) {
                 wishRepository.delete(wish);
@@ -102,9 +101,6 @@ public class WishService {
 
         for (WishItem wishItem:items) {
 
-            Item item = wishItem.getItem();
-            item.addStock(wishItem.getWishCount());
-
             wishItemRepository.delete(wishItem);
         }
 
@@ -121,7 +117,6 @@ public class WishService {
         update.setWish(findWish.getWish());
         update.setItem(findWish.getItem());
         update.addCount(count);
-        item.removeStock(count);
 
         return update;
     }

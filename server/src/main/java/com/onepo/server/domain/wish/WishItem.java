@@ -38,13 +38,7 @@ public class WishItem {
     public static WishItem cartItem(Wish wish, Item item,int wishCount) {
         WishItem wishItem=new WishItem(wish,item,wishCount);
 
-        item.removeStock(wishCount);
-
         return wishItem;
-    }
-
-    public void cartCancel() {
-        getItem().addStock(this.wishCount);
     }
 
     public void addCount(int count) {

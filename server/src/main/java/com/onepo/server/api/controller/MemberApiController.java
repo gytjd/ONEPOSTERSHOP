@@ -39,7 +39,7 @@ public class MemberApiController {
         return ResponseEntity.ok().body(new ResponseDto("회원가입이 완료되었습니다."));
     }
 
-     /**
+    /**
      * 로그인
      */
     @PostMapping("/login")
@@ -61,7 +61,7 @@ public class MemberApiController {
         return ResponseEntity.ok().body(new ResponseDto("로그인 되었습니다."));
     }
 
-     /**
+    /**
      * 로그아웃
      */
     @PostMapping("/logout")

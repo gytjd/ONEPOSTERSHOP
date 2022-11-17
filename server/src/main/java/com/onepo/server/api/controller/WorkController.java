@@ -1,11 +1,8 @@
 package com.onepo.server.api.controller;
 
-import com.onepo.server.api.dto.news.NewsCreateDto;
 import com.onepo.server.api.dto.work.WorkCreateDto;
-import com.onepo.server.domain.news.News;
 import com.onepo.server.domain.work.Work;
 import com.onepo.server.file.FileStore;
-import com.onepo.server.service.NewsService;
 import com.onepo.server.service.WorkService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.Resource;

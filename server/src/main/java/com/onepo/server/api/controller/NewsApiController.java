@@ -1,17 +1,21 @@
 package com.onepo.server.api.controller;
 
-import com.onepo.server.api.dto.news.NewsCreateDto;
+import com.onepo.server.api.dto.ResponseDto;
+import com.onepo.server.api.dto.news.NewsCreateRequest;
+import com.onepo.server.api.dto.news.NewsResponse;
 import com.onepo.server.domain.news.News;
 import com.onepo.server.file.FileStore;
 import com.onepo.server.service.NewsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
-import org.springframework.ui.Model;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -23,30 +27,27 @@ public class NewsApiController {
 
     private final FileStore fileStore;
 
-    @GetMapping("/news/new")
-    public NewsCreateDto createNews(@ModelAttribute NewsCreateDto dto) {
-        return new NewsCreateDto();
-    }
+    /**
+     * 새로운 뉴스 등록
+     */
+    @PostMapping("/news/create")
+    public ResponseEntity<ResponseDto> create(@ModelAttribute @RequestBody NewsCreateRequest request) throws IOException {
+        String storeImageFiles = fileStore.storeFile(request.getImageFile());
 
-    @PostMapping("/news/new")
-    public void create(@ModelAttribute @RequestBody NewsCreateDto dto) throws IOException {
-        String storeImageFiles = fileStore.storeFile(dto.getImageFile());
-
-        News news = dto.toEntity(storeImageFiles);
+        News news = request.toEntity(storeImageFiles);
         newsService.create(news);
+
+        return ResponseEntity.ok().body(new ResponseDto("게시물이 정상적으로 등록되었습니다."));
     }
+    /**
+     * 뉴스 조회
+     */
+    @GetMapping("/news")
+    public ResponseEntity<List<NewsResponse>> News() {
+        List<News> newsList = newsService.findAll();
 
-    @GetMapping("/news/{id}")
-    public String News(@PathVariable Long id) {
-        News news = newsService.findOne(id);
+        List<NewsResponse> newsResponseList = newsList.stream().map(NewsResponse::toDTO).collect(Collectors.toList());
 
-        return "news-view";
-    }
-
-    @ResponseBody
-    @GetMapping("/images/{filename}")
-    public Resource downloadImage(@PathVariable String filename) throws
-            MalformedURLException {
-        return new UrlResource("file:" + fileStore.getFullPath(filename));
+        return ResponseEntity.ok().body(newsResponseList);
     }
 }

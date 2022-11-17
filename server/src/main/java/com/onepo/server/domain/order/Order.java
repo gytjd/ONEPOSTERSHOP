@@ -75,7 +75,6 @@ public class Order {
         orderItem.setOrder(this);
     }
 
-    //생성 메소드
 
 
     // 장바구니 주문

@@ -43,7 +43,7 @@ public class OrderServiceTest {
     @Rollback(value = false)
     public void 하나만주문() throws Exception {
         Member member=new Member();
-        member.register("황효성","hys3396","1234","hys339631@gmail.com");
+        member.register("황효성","hys3396","123456789","hys339631@gmail.com");
         memberService.join(member);
 
         Item item1=new Item();

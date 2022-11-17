@@ -1,8 +1,11 @@
 package com.onepo.server.domain.member;
 
+import com.onepo.server.api.dto.member.PasswordForm;
 import com.onepo.server.domain.wish.Wish;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -25,6 +28,8 @@ public class Member {
     private String userId;
 
     @NotEmpty
+    @Length(min = 8, max = 15)
+    @Setter
     private String password;
 
     @NotEmpty
@@ -41,5 +46,9 @@ public class Member {
         this.userId = userId;
         this.password = password;
         this.email = email;
+    }
+
+    public void passwordChange(String newPassword) {
+        this.password = newPassword;
     }
 }

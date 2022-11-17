@@ -21,6 +21,7 @@ import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
+@CrossOrigin
 public class WorkController {
 
     private final WorkService workService;

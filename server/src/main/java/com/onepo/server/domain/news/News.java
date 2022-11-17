@@ -31,6 +31,5 @@ public class News {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDateTime localDateTime;
 
-    @NotEmpty
     private String imageFiles;
 }

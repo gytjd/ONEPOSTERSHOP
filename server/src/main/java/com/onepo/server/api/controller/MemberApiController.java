@@ -3,6 +3,7 @@ package com.onepo.server.api.controller;
 import com.onepo.server.api.dto.member.MemberCreateDto;
 import com.onepo.server.api.dto.member.MemberLoginDto;
 import com.onepo.server.api.dto.member.MemberLoginResponse;
+import com.onepo.server.api.dto.member.PasswordForm;
 import com.onepo.server.domain.member.Member;
 import com.onepo.server.domain.member.SessionConst;
 import com.onepo.server.service.MemberService;
@@ -17,17 +18,18 @@ import javax.servlet.http.HttpSession;
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor
+@CrossOrigin
 public class MemberApiController {
 
     private final MemberService memberService;
 
-    @GetMapping("/createMember")
-    public MemberCreateDto createMember() {
+    @GetMapping("/member/new")
+    public MemberCreateDto saveMember() {
         return new MemberCreateDto();
     }
 
-    @PostMapping("/createMember")
-    public String create(@Validated @RequestBody MemberCreateDto dto, BindingResult bindingResult) {
+    @PostMapping("/member/new")
+    public String Save(@Validated @RequestBody MemberCreateDto dto, BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()) {
             return null;
@@ -69,5 +71,21 @@ public class MemberApiController {
         if (session != null) {
             session.invalidate();
         }
+    }
+
+    @GetMapping("/member/pwdChange")
+    public PasswordForm changePassword() {
+        return new PasswordForm();
+    }
+
+    @PutMapping("/member/pwdChange/{id}")
+    public String change(@PathVariable("id") Long id,
+                         @Validated @RequestBody PasswordForm form, BindingResult bindingResult) {
+
+        if (bindingResult.hasErrors()) {
+            return null;
+        }
+        memberService.updateMember(id, form);
+        return "success";
     }
 }

@@ -1,7 +1,9 @@
 package com.onepo.server.service;
 
 
+import com.onepo.server.api.dto.member.PasswordForm;
 import com.onepo.server.domain.member.Member;
+import com.onepo.server.exception.NewPasswordWrong;
 import com.onepo.server.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -53,5 +55,19 @@ public class MemberService {
             return member;
         }
         return null;
+    }
+
+    //비밀번호 변경
+    @Transactional
+    public void updateMember(Long id, PasswordForm passwordForm) {
+        Member member = memberRepository.findOne(id);
+
+        if (passwordForm.getNewPassword().equals(passwordForm.getNewPasswordConfirm())) {
+            //member.passwordChange(passwordForm.getNewPassword());
+            member.setPassword(passwordForm.getNewPasswordConfirm());
+        }
+        else {
+            throw new NewPasswordWrong("새 비밀번호가 일치하지 않습니다.");
+        }
     }
 }

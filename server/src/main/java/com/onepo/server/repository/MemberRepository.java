@@ -23,7 +23,7 @@ public class MemberRepository {
         return em.find(Member.class, id);
     }
 
-    //전체 회원 조회회
+    //전체 회원 조회
     public List<Member> findAll() {
         return em.createQuery("select m from Member As m", Member.class)
                 .getResultList();
@@ -35,4 +35,7 @@ public class MemberRepository {
                 .setParameter("userId", userId)
                 .getResultList();
     }
+
+    //비밀번호 변경
+
 }

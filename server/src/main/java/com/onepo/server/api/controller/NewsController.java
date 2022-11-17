@@ -17,6 +17,7 @@ import java.net.MalformedURLException;
 
 @Controller
 @RequiredArgsConstructor
+@CrossOrigin
 public class NewsController {
 
     private final NewsService newsService;
@@ -24,12 +25,12 @@ public class NewsController {
     private final FileStore fileStore;
 
     @GetMapping("/news/new")
-    public String newItem(@ModelAttribute NewsCreateDto dto) {
+    public String createNews(@ModelAttribute NewsCreateDto dto) {
         return "news-form";
     }
 
     @PostMapping("/news/new")
-    public String saveItem(@ModelAttribute NewsCreateDto dto, RedirectAttributes redirectAttributes) throws IOException {
+    public String create(@ModelAttribute NewsCreateDto dto, RedirectAttributes redirectAttributes) throws IOException {
         String storeImageFiles = fileStore.storeFile(dto.getImageFile());
 
         News news = dto.toEntity(storeImageFiles);
@@ -42,7 +43,7 @@ public class NewsController {
     }
 
     @GetMapping("/news/{id}")
-    public String items(@PathVariable Long id, Model model) {
+    public String News(@PathVariable Long id, Model model) {
         News news = newsService.findOne(id);
         model.addAttribute("news", news);
         return "news-view";

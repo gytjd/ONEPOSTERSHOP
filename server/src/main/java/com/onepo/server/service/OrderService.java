@@ -14,6 +14,7 @@ import com.onepo.server.exception.NotPermitException;
 import com.onepo.server.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.aspectj.weaver.ast.Or;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -53,8 +54,8 @@ public class OrderService {
     }
 
     @Transactional
-    public Long add_Wish_Order(Member member, Wish wish, Delivery delivery, List<OrderItem> orderItemList) {
-        Order order = Order.createOrder(member,wish, delivery, orderItemList);
+    public Long add_Wish_Order(Member member,Delivery delivery, List<OrderItem> orderItemList) {
+        Order order = Order.createOrder(member,delivery, orderItemList);
 
         save_order(order);
 
@@ -62,7 +63,7 @@ public class OrderService {
     }
 
     @Transactional
-    public Long order_Wish(Member member,Delivery delivery) { // 장바구니 주문
+    public Long order_Wish(Member member, Delivery delivery) { // 장바구니 주문
         Wish wishByMemberId = wishService.findWishByMemberId(member.getId());
         List<WishItem> userWishList = wishService.findWishItemsByWishId(wishByMemberId.getId());
 
@@ -72,13 +73,20 @@ public class OrderService {
             OrderItem orderItem = add_Wish_Item(member.getId(),
                     wishItem.getItem(),
                     wishItem);
-
             orderItemList.add(orderItem);
         }
 
-        Long orderId = add_Wish_Order(member, wishByMemberId,delivery, orderItemList);
+        Long orderId = add_Wish_Order(member,delivery, orderItemList);
+
+
+        for (WishItem wishItem : userWishList) {
+            wishService.delete_Wish_Item(wishItem);
+        }
+
+        wishService.delete_Wish(wishByMemberId);
 
         return orderId;
+
     }
 
 
@@ -161,6 +169,13 @@ public class OrderService {
         return findOrdersByMemberId(member.getId());
     }
 
+    @Transactional
+    public void delete_All_Wish(Wish wish,List<WishItem> wishItem) {
+
+        wishService.delete_All_wishItem(wish.getId());
+        wishService.delete_Wish(wish);
+    }
+
 
     /**
      *
@@ -200,6 +215,7 @@ public class OrderService {
     public List<OrderItem> findOrderItemsByOrderId(Long id) {
         return orderItemRepository.findOrderItemsByOrderId(id);
     }
+
 
 
 

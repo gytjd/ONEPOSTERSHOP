@@ -47,11 +47,11 @@ public class WishService {
 
 
         if (findWish == null) {
-            findWish=WishItem.cartItem(wish,item,count);
+            findWish=WishItem.cartItem(wish,findItem,count);
             save_wish_Item(findWish);
         }
         else {
-            WishItem update = updateWish(findWish, count);
+            WishItem update = updateWish(findWish,findItem,count);
             save_wish_Item(update);
         }
 
@@ -116,17 +116,20 @@ public class WishService {
     }
 
 
-    public WishItem updateWish(WishItem findWish,int count) {
+    public WishItem updateWish(WishItem findWish,Item item,int count) {
         WishItem update=findWish;
         update.setWish(findWish.getWish());
         update.setItem(findWish.getItem());
         update.addCount(count);
-        update.setWishCount(update.getWishCount());
+        item.removeStock(count);
 
         return update;
     }
 
-    // WishRepository Service
+    /**
+     *
+     * WishRepository Service
+     */
 
     public void save_wish(Wish wish) {
         wishRepository.save(wish);
@@ -145,10 +148,10 @@ public class WishService {
     }
 
 
-
-
-
-    // WishItemRepository Service
+    /**
+     *
+     * WishItemRepository Service
+     */
 
     public void save_wish_Item(WishItem wishItem) {
         wishItemRepository.save(wishItem);
@@ -164,6 +167,24 @@ public class WishService {
 
     public List<WishItem> findAll() {
         return wishItemRepository.findAll();
+    }
+
+
+
+    /**
+     * 공통 Service
+     */
+
+    @Transactional void delete_Wish(Wish wish) {
+        wishRepository.delete(wish);
+    }
+
+    @Transactional void delete_Wish_Item(WishItem wishItem) {
+        wishItemRepository.delete(wishItem);
+    }
+
+    public void delete_All_wishItem(Long id) {
+        wishItemRepository.deleteAllByWishId(id);
     }
 
 

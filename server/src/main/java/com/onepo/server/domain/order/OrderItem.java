@@ -32,13 +32,8 @@ public class OrderItem {
     @JoinColumn(name="MEMBER_ID")
     private Member member; // 구매자
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="WISH_ITEM_ID")
-    private WishItem wishItem;
-
     private int orderPrice;
     private int count;
-
     private int TotalPrice;
 
 
@@ -50,7 +45,6 @@ public class OrderItem {
         orderItem.setMember(member);
         orderItem.setItem(item);
 
-        orderItem.setWishItem(wishItem);
         orderItem.setOrderPrice(wishItem.getItem().getPrice());
         orderItem.setCount(wishItem.getWishCount());
         orderItem.setTotalPrice(wishItem.getItem().getPrice() * wishItem.getWishCount());
@@ -66,7 +60,6 @@ public class OrderItem {
         orderItem.setMember(member);
         orderItem.setItem(item);
 
-        orderItem.setWishItem(null);
         orderItem.setOrderPrice(item.getPrice());
         orderItem.setCount(count);
         orderItem.setTotalPrice(item.getPrice()*count);

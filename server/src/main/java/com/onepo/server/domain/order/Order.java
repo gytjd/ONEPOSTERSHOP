@@ -34,9 +34,6 @@ public class Order {
     @OneToMany(mappedBy = "order",cascade = CascadeType.ALL)
     private List<OrderItem> orderItems=new ArrayList<>();
 
-    @ManyToOne
-    @JoinColumn(name = "WISH_ID")
-    private Wish wish;
 
     @DateTimeFormat(pattern = "yyyy-mm-dd-hh-mm-ss")
     private LocalDateTime orderDate;
@@ -52,9 +49,8 @@ public class Order {
 
     // 장바구니 주문
 
-    public Order(Member member,Wish wish,LocalDateTime orderDate, OrderStatus orderStatus, Delivery delivery,List<OrderItem> orderItems) {
+    public Order(Member member,LocalDateTime orderDate, OrderStatus orderStatus, Delivery delivery,List<OrderItem> orderItems) {
         this.member = member;
-        this.wish=wish;
         this.orderDate = orderDate;
         this.orderStatus = orderStatus;
         this.delivery=delivery;
@@ -64,17 +60,6 @@ public class Order {
         }
     }
 
-    public Order(Member member,LocalDateTime orderDate,OrderStatus orderStatus,Delivery delivery,List<OrderItem> orderItems) {
-        this.member=member;
-        this.orderDate=orderDate;
-        this.orderStatus=orderStatus;
-        this.delivery=delivery;
-
-        for (OrderItem orderItem: orderItems) {
-            this.addOrderItem(orderItem);
-        }
-
-    }
 
     // 편의 메소드
 
@@ -87,12 +72,6 @@ public class Order {
 
 
     // 장바구니 주문
-    public static Order createOrder(Member member,Wish wish,Delivery delivery,List<OrderItem> orderItems) {
-
-        Order order=new Order(member,wish,LocalDateTime.now(),OrderStatus.ORDER,delivery,orderItems);
-
-        return order;
-    }
 
     public static Order createOrder(Member member,Delivery delivery,List<OrderItem> orderItem) {
 

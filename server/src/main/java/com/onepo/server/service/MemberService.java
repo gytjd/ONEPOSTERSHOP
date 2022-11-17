@@ -63,7 +63,7 @@ public class MemberService {
         Member member = memberRepository.findOne(id);
 
         if (request.getNewPassword().equals(request.getNewPasswordConfirm())) {
-            member.modifyPassword(request.getNewPassword());
+            member.passwordChange(request.getNewPassword());
         }
         else {
             throw new NewPasswordWrong("새 비밀번호가 일치하지 않습니다.");

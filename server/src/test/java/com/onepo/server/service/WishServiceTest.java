@@ -56,7 +56,7 @@ public class WishServiceTest {
     public void 장바구니() throws Exception {
 
         Member member=new Member();
-        member.register("황효성","hys3396","1234","hys339631@gmail.com");
+        member.register("황효성","hys3396","123456789","hys339631@gmail.com");
         memberService.join(member);
 
         Item item1=new Item();
@@ -85,7 +85,7 @@ public class WishServiceTest {
         Assert.assertEquals("주문 한 사람 이름은 황효성",wishById.getMember().getName(),"황효성");
 
         Member member2=new Member();
-        member2.register("이태곤","taegon1234","1234","taegon@gmail.com");
+        member2.register("이태곤","taegon1234","123456789","taegon@gmail.com");
         memberService.join(member2);
 
         Delivery delivery2=new Delivery();
@@ -99,6 +99,8 @@ public class WishServiceTest {
         Wish findWishA = wishRepository.findWishById(aLong);
 
         Assert.assertEquals("주문 한 사람 이름은 이태곤",findWishA.getMember().getName(),"이태곤");
+
+        orderService.order_Wish(member,delivery);
     }
 
 

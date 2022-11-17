@@ -72,16 +72,14 @@ public class OrderService {
                     wishItem.getItem(),
                     wishItem);
             orderItemList.add(orderItem);
+
+            wishItem.getItem().removeStock(wishItem.getWishCount());
         }
 
         Long orderId = add_Wish_Order(member,delivery, orderItemList);
 
 
-        for (WishItem wishItem : userWishList) {
-            wishService.delete_Wish_Item(wishItem);
-        }
-
-        wishService.delete_Wish(wishByMemberId);
+        delete_All_Wish(wishByMemberId,userWishList);
 
         return orderId;
 
@@ -125,6 +123,7 @@ public class OrderService {
         List<OrderItem> orderItem=new ArrayList<>();
         orderItem.add(createOrderOne);
 
+        item.removeStock(createOrderOne.getCount());
         Long orderId = add_One_Order(member, delivery, orderItem);
 
         return orderId;

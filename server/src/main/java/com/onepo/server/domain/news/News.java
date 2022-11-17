@@ -21,15 +21,8 @@ public class News {
     @Id
     @GeneratedValue
     private Long id;
-
-    @NotEmpty
     private String title;
-
-    @NotNull
     private String content;
-
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDateTime localDateTime;
-
     private String imageFiles;
 }

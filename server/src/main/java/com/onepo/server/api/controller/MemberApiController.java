@@ -1,13 +1,12 @@
 package com.onepo.server.api.controller;
 
-import com.onepo.server.api.dto.member.MemberCreateDto;
-import com.onepo.server.api.dto.member.MemberLoginDto;
-import com.onepo.server.api.dto.member.MemberLoginResponse;
-import com.onepo.server.api.dto.member.PasswordForm;
+import com.onepo.server.api.dto.ResponseDto;
+import com.onepo.server.api.dto.member.*;
 import com.onepo.server.domain.member.Member;
 import com.onepo.server.domain.member.SessionConst;
 import com.onepo.server.service.MemberService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -23,31 +22,28 @@ public class MemberApiController {
 
     private final MemberService memberService;
 
-    @GetMapping("/member/new")
-    public MemberCreateDto saveMember() {
-        return new MemberCreateDto();
-    }
-
-    @PostMapping("/member/new")
-    public String Save(@Validated @RequestBody MemberCreateDto dto, BindingResult bindingResult) {
+    /**
+     * 회원등록
+     */
+    @PostMapping("/member/signup")
+    public ResponseEntity<ResponseDto> save(@Validated @RequestBody MemberSignUpRequest request, BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()) {
             return null;
         }
         Member member = new Member();
 
-        member.register(dto.getName(), dto.getUserId(), dto.getPassword(), dto.getEmail());
+        member.register(request.getName(), request.getUserId(), request.getPassword(), request.getEmail());
         memberService.join(member);
 
-        return "redirect:/login";
+        return ResponseEntity.ok().body(new ResponseDto("회원가입이 완료되었습니다."));
     }
 
-    @GetMapping("/login")
-    public MemberLoginDto loginForm() {
-        return new MemberLoginDto();
-    }
+    /**
+     * 로그인
+     */
     @PostMapping("/login")
-    public MemberLoginResponse login(@Validated @RequestBody MemberLoginDto dto, BindingResult bindingResult, HttpServletRequest request) {
+    public ResponseEntity<ResponseDto> login(@Validated @RequestBody MemberLoginRequest dto, BindingResult bindingResult, HttpServletRequest request) {
 
         String findUserId = dto.getUserId();
         Member findMember = memberService.findByUserId(findUserId);
@@ -56,36 +52,40 @@ public class MemberApiController {
         Member member = memberService.authenticated(findMember, findPassword);
 
         if (member.equals(null) || bindingResult.hasErrors()) {
-            return null;
+            return ResponseEntity.badRequest().body(new ResponseDto("아이디 또는 비밀번호를 확인해주세요."));
         }
 
         HttpSession session = request.getSession();
         session.setAttribute(SessionConst.LOGIN_MEMBER, member);
 
-        return new MemberLoginResponse(member);
+        return ResponseEntity.ok().body(new ResponseDto("로그인 되었습니다."));
     }
 
+    /**
+     * 로그아웃
+     */
     @PostMapping("/logout")
-    public void logout(HttpServletRequest request) {
+    public ResponseEntity<ResponseDto> logout(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
         if (session != null) {
             session.invalidate();
         }
+
+        return ResponseEntity.ok().body(new ResponseDto("로그아웃 되었습니다."));
     }
 
-    @GetMapping("/member/pwdChange")
-    public PasswordForm changePassword() {
-        return new PasswordForm();
-    }
-
-    @PutMapping("/member/pwdChange/{id}")
-    public String change(@PathVariable("id") Long id,
-                         @Validated @RequestBody PasswordForm form, BindingResult bindingResult) {
+    /**
+     * 비밀번호 변경
+     */
+    @PutMapping("/member/{id}")
+    public ResponseEntity<ResponseDto> change(@PathVariable("id") Long id,
+                                              @Validated @RequestBody MemberReviseRequest request, BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()) {
-            return null;
+            return ResponseEntity.badRequest().body(new ResponseDto("비밀번호를 다시한번 확인해주세요."));
         }
-        memberService.updateMember(id, form);
-        return "success";
+        memberService.updateMember(id, request);
+        return ResponseEntity.ok().body(new ResponseDto("회원정보가 수정되었습니다."));
     }
+
 }

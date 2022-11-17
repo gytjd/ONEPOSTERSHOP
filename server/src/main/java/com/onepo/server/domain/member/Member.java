@@ -28,7 +28,7 @@ public class Member {
     private String userId;
 
     @NotEmpty
-//    @Length(min = 8, max = 15)
+    @Length(min = 8, max = 15)
     @Setter
     private String password;
 

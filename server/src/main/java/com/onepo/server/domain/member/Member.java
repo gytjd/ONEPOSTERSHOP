@@ -1,6 +1,5 @@
 package com.onepo.server.domain.member;
 
-import com.onepo.server.api.dto.member.PasswordForm;
 import com.onepo.server.domain.wish.Wish;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

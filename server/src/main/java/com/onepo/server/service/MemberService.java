@@ -1,7 +1,7 @@
 package com.onepo.server.service;
 
 
-import com.onepo.server.api.dto.member.PasswordForm;
+import com.onepo.server.api.dto.member.MemberReviseRequest;
 import com.onepo.server.domain.member.Member;
 import com.onepo.server.exception.NewPasswordWrong;
 import com.onepo.server.repository.MemberRepository;
@@ -59,12 +59,11 @@ public class MemberService {
 
     //비밀번호 변경
     @Transactional
-    public void updateMember(Long id, PasswordForm passwordForm) {
+    public void updateMember(Long id, MemberReviseRequest request) {
         Member member = memberRepository.findOne(id);
 
-        if (passwordForm.getNewPassword().equals(passwordForm.getNewPasswordConfirm())) {
-            //member.passwordChange(passwordForm.getNewPassword());
-            member.setPassword(passwordForm.getNewPasswordConfirm());
+        if (request.getNewPassword().equals(request.getNewPasswordConfirm())) {
+            member.modifyPassword(request.getNewPassword());
         }
         else {
             throw new NewPasswordWrong("새 비밀번호가 일치하지 않습니다.");

@@ -7,45 +7,39 @@ import com.onepo.server.service.NewsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
 
-@Controller
+@RestController
 @RequiredArgsConstructor
 @CrossOrigin
-public class NewsController {
+@RequestMapping("/api")
+public class NewsApiController {
 
     private final NewsService newsService;
 
     private final FileStore fileStore;
 
     @GetMapping("/news/new")
-    public String createNews(@ModelAttribute NewsCreateDto dto) {
-        return "news-form";
+    public NewsCreateDto createNews(@ModelAttribute NewsCreateDto dto) {
+        return new NewsCreateDto();
     }
 
     @PostMapping("/news/new")
-    public String create(@ModelAttribute NewsCreateDto dto, RedirectAttributes redirectAttributes) throws IOException {
+    public void create(@ModelAttribute @RequestBody NewsCreateDto dto) throws IOException {
         String storeImageFiles = fileStore.storeFile(dto.getImageFile());
 
         News news = dto.toEntity(storeImageFiles);
-
         newsService.create(news);
-
-        redirectAttributes.addAttribute("newsId", news.getId());
-
-        return "redirect:/news/{newsId}";
     }
 
     @GetMapping("/news/{id}")
-    public String News(@PathVariable Long id, Model model) {
+    public String News(@PathVariable Long id) {
         News news = newsService.findOne(id);
-        model.addAttribute("news", news);
+
         return "news-view";
     }
 

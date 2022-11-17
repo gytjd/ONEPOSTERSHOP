@@ -2,12 +2,15 @@ package com.onepo.server.service;
 
 
 import com.onepo.server.domain.delivery.Delivery;
+import com.onepo.server.domain.delivery.DeliveryStatus;
 import com.onepo.server.domain.item.Item;
 import com.onepo.server.domain.member.Member;
 import com.onepo.server.domain.order.Order;
 import com.onepo.server.domain.order.OrderItem;
 import com.onepo.server.domain.wish.Wish;
 import com.onepo.server.domain.wish.WishItem;
+import com.onepo.server.exception.AlreadyDeliveredException;
+import com.onepo.server.exception.NotPermitException;
 import com.onepo.server.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.aspectj.weaver.ast.Or;
@@ -121,15 +124,70 @@ public class OrderService {
         return orderId;
     }
 
+    /**
+     *
+     *
+     * 공통 Service
+     */
+
+    @Transactional
+    public void order_Cancel(Member member,Long orderId) {
+        Order order = findOrderByMemberIdAndId(member.getId(), orderId);
+
+        if(order.getMember().getId()!=member.getId()) {
+            throw new NotPermitException();
+        }
+
+        if(order.getDelivery().getStatus()== DeliveryStatus.COMP) {
+            throw new AlreadyDeliveredException();
+        }
+        else {
+            List<OrderItem> orderItems = findOrderItemsByOrderId(order.getId());
+
+            for(OrderItem orderItem : orderItems) {
+
+                Item item = orderItem.getItem();
+                item.addStock(orderItem.getCount());
+
+                orderItemRepository.delete(orderItem);
+            }
+
+            orderRepository.delete(order);
+        }
+
+    }
+
+    public List<Order> order_list(Member member) { // 사용자가 주문한 전체 주문 확인
+        return findOrdersByMemberId(member.getId());
+    }
 
 
-    // OrderRepository Service
+    /**
+     *
+      * OrderRepository Service
+     */
 
     public void save_order(Order order) {
         orderRepository.save(order);
     }
 
-    // OrderItemRepository Service
+    public List<Order> findOrdersByMemberId(Long id) {
+        return orderRepository.findOrdersByMemberId(id);
+    }
+
+    public Order findOrderByMemberId(Long id) {
+        return orderRepository.findOrderByMemberId(id);
+    }
+
+    public Order findOrderByMemberIdAndId(Long memberId,Long orderId) {
+        return orderRepository.findOrderByMemberIdAndId(memberId,orderId);
+    }
+
+
+    /**
+     *
+     * OrderItemRepository Service
+     */
 
     public void save_order_item(OrderItem orderItem) {
         orderItemRepository.save(orderItem);
@@ -138,6 +196,11 @@ public class OrderService {
     public List<OrderItem> findAll() {
         return orderItemRepository.findAll();
     }
+
+    public List<OrderItem> findOrderItemsByOrderId(Long id) {
+        return orderItemRepository.findOrderItemsByOrderId(id);
+    }
+
 
 
 }

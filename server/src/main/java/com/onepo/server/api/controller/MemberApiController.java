@@ -62,6 +62,7 @@ public class MemberApiController {
 
         String findUserId = dto.getUserId();
         Member findMember = memberService.findByUserId(findUserId);
+
         String findPassword = dto.getPassword();
 
         Member member = memberService.authenticated(findMember, findPassword);

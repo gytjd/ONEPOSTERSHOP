@@ -19,20 +19,9 @@ public class Member {
     @GeneratedValue
     @Column(name = "MEMBER_ID")
     private Long id;
-
-    @NotEmpty
     private String name;
-
-    @NotEmpty
     private String userId;
-
-    @NotEmpty
-    @Length(min = 8, max = 15)
-    @Setter
     private String password;
-
-    @NotEmpty
-    @Email
     private String email;
 
     @OneToOne(fetch = FetchType.LAZY)

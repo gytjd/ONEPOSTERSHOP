@@ -26,7 +26,7 @@ public class MemberApiController {
      * 회원등록
      */
     @PostMapping("/member/signup")
-    public ResponseEntity<ResponseDto> save(@Validated @RequestBody MemberSignUpRequest request, BindingResult bindingResult) {
+    public ResponseEntity<ResponseDto> saveMember(@Validated @RequestBody MemberSignUpRequest request, BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()) {
             return null;
@@ -37,6 +37,21 @@ public class MemberApiController {
         memberService.join(member);
 
         return ResponseEntity.ok().body(new ResponseDto("회원가입이 완료되었습니다."));
+    }
+
+
+    /**
+     * 비밀번호 변경
+     */
+    @PutMapping("/member/modify/{id}")
+    public ResponseEntity<ResponseDto> modifyMember(@PathVariable("id") Long id,
+                                              @Validated @RequestBody MemberReviseRequest request, BindingResult bindingResult) {
+
+        if (bindingResult.hasErrors()) {
+            return ResponseEntity.badRequest().body(new ResponseDto("비밀번호를 다시한번 확인해주세요."));
+        }
+        memberService.updateMember(id, request);
+        return ResponseEntity.ok().body(new ResponseDto("회원정보가 수정되었습니다."));
     }
 
     /**
@@ -73,19 +88,4 @@ public class MemberApiController {
 
         return ResponseEntity.ok().body(new ResponseDto("로그아웃 되었습니다."));
     }
-
-    /**
-     * 비밀번호 변경
-     */
-    @PutMapping("/member/{id}")
-    public ResponseEntity<ResponseDto> change(@PathVariable("id") Long id,
-                                              @Validated @RequestBody MemberReviseRequest request, BindingResult bindingResult) {
-
-        if (bindingResult.hasErrors()) {
-            return ResponseEntity.badRequest().body(new ResponseDto("비밀번호를 다시한번 확인해주세요."));
-        }
-        memberService.updateMember(id, request);
-        return ResponseEntity.ok().body(new ResponseDto("회원정보가 수정되었습니다."));
-    }
-
 }

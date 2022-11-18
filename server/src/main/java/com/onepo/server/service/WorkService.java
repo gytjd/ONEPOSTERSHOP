@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -22,5 +24,9 @@ public class WorkService {
 
     public Work findOne(Long id) {
         return workRepository.findById(id);
+    }
+
+    public List<Work> findAll() {
+        return workRepository.findAll();
     }
 }

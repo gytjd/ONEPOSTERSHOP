@@ -1,11 +1,13 @@
 package com.onepo.server.repository;
 
+import com.onepo.server.domain.item.Item;
 import com.onepo.server.domain.news.News;
 import com.onepo.server.domain.work.Work;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+import java.util.List;
 
 @Repository
 @RequiredArgsConstructor
@@ -20,5 +22,10 @@ public class WorkRepository {
 
     public Work findById(Long id) {
         return em.find(Work.class, id);
+    }
+
+    public List<Work> findAll() {
+        return em.createQuery("select w from Work w", Work.class)
+                .getResultList();
     }
 }

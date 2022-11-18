@@ -7,13 +7,10 @@ import com.onepo.server.domain.news.News;
 import com.onepo.server.file.FileStore;
 import com.onepo.server.service.NewsService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,10 +25,10 @@ public class NewsApiController {
     private final FileStore fileStore;
 
     /**
-     * 새로운 뉴스 등록
+     * 뉴스 등록
      */
-    @PostMapping("/news/create")
-    public ResponseEntity<ResponseDto> create(@ModelAttribute @RequestBody NewsCreateRequest request) throws IOException {
+    @PostMapping("/news/save")
+    public ResponseEntity<ResponseDto> saveNews(@ModelAttribute @RequestBody NewsCreateRequest request) throws IOException {
         String storeImageFiles = fileStore.storeFile(request.getImageFile());
 
         News news = request.toEntity(storeImageFiles);
@@ -43,11 +40,22 @@ public class NewsApiController {
      * 뉴스 조회
      */
     @GetMapping("/news")
-    public ResponseEntity<List<NewsResponse>> News() {
+    public ResponseEntity<List<NewsResponse>> getNewsList() {
         List<News> newsList = newsService.findAll();
 
         List<NewsResponse> newsResponseList = newsList.stream().map(NewsResponse::toDTO).collect(Collectors.toList());
 
         return ResponseEntity.ok().body(newsResponseList);
+    }
+
+    /**
+     * 뉴스 단건 조회
+     * @param id
+     */
+    @GetMapping("/news/{id}")
+    public ResponseEntity<NewsResponse> getNews(@PathVariable("id") Long id) {
+        News news = newsService.findOne(id);
+
+        return ResponseEntity.ok().body(new NewsResponse(news));
     }
 }

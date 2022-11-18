@@ -2,12 +2,15 @@ package com.onepo.server.api.controller;
 
 import com.onepo.server.api.dto.ResponseDto;
 import com.onepo.server.api.dto.news.NewsCreateRequest;
+import com.onepo.server.api.dto.news.NewsModifyRequest;
 import com.onepo.server.api.dto.news.NewsResponse;
 import com.onepo.server.domain.news.News;
 import com.onepo.server.file.FileStore;
 import com.onepo.server.service.NewsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -28,7 +31,7 @@ public class NewsApiController {
      * 뉴스 등록
      */
     @PostMapping("/news/save")
-    public ResponseEntity<ResponseDto> saveNews(@ModelAttribute @RequestBody NewsCreateRequest request) throws IOException {
+    public ResponseEntity<ResponseDto> saveNews(@Validated NewsCreateRequest request) throws IOException {
         String storeImageFiles = fileStore.storeFile(request.getImageFile());
 
         News news = request.toEntity(storeImageFiles);
@@ -57,5 +60,21 @@ public class NewsApiController {
         News news = newsService.findOne(id);
 
         return ResponseEntity.ok().body(new NewsResponse(news));
+    }
+
+    /**
+     * 뉴스 정보 변경
+     * @param id
+     */
+    @PutMapping("news/{id}")
+    public ResponseEntity<ResponseDto> modifyNews(@PathVariable("id") Long id,
+                                                  @Validated NewsModifyRequest request,
+                                                  BindingResult bindingResult) throws IOException {
+
+        if (bindingResult.hasErrors()) {
+            return ResponseEntity.badRequest().body(new ResponseDto("게시물 정보를 한번 더 확인해주세요."));
+        }
+        newsService.updateNews(id, request);
+        return ResponseEntity.ok().body(new ResponseDto("수정이 완료되었습니다."));
     }
 }

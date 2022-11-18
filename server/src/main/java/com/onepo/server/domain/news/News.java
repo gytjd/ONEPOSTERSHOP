@@ -1,5 +1,6 @@
 package com.onepo.server.domain.news;
 
+import com.onepo.server.api.dto.news.NewsModifyRequest;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -24,5 +25,11 @@ public class News {
     private String title;
     private String content;
     private LocalDateTime localDateTime;
-    private String imageFiles;
+    private String imageFile;
+
+    public void modify(String title, String content, String storeFileName) {
+        this.title = title;
+        this.content = content;
+        this.imageFile = storeFileName;
+    }
 }

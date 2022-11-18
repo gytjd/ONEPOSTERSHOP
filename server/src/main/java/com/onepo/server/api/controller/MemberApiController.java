@@ -45,7 +45,7 @@ public class MemberApiController {
      */
     @PutMapping("/member/modify/{id}")
     public ResponseEntity<ResponseDto> modifyMember(@PathVariable("id") Long id,
-                                              @Validated @RequestBody MemberReviseRequest request, BindingResult bindingResult) {
+                                                    @Validated @RequestBody PasswordModifyRequest request, BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()) {
             return ResponseEntity.badRequest().body(new ResponseDto("비밀번호를 다시한번 확인해주세요."));

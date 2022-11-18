@@ -22,7 +22,7 @@ public class NewsCreateRequest {
         news.setTitle(title);
         news.setContent(content);
         news.setLocalDateTime(LocalDateTime.now());
-        news.setImageFiles(filePath);
+        news.setImageFile(filePath);
 
         return news;
     }

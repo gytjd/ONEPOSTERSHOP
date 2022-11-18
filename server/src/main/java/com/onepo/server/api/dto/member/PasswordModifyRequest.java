@@ -5,7 +5,7 @@ import lombok.Data;
 import javax.validation.constraints.NotBlank;
 
 @Data
-public class MemberReviseRequest {
+public class PasswordModifyRequest {
 
     @NotBlank(message = "새로운 비밀번호를 입력해주세요.")
     private String newPassword;

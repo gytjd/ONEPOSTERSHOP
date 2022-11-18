@@ -1,7 +1,7 @@
 package com.onepo.server.service;
 
 
-import com.onepo.server.api.dto.member.MemberReviseRequest;
+import com.onepo.server.api.dto.member.PasswordModifyRequest;
 import com.onepo.server.domain.member.Member;
 import com.onepo.server.exception.NewPasswordWrong;
 import com.onepo.server.repository.MemberRepository;
@@ -59,7 +59,7 @@ public class MemberService {
 
     //비밀번호 변경
     @Transactional
-    public void updateMember(Long id, MemberReviseRequest request) {
+    public void updateMember(Long id, PasswordModifyRequest request) {
         Member member = memberRepository.findOne(id);
 
         if (request.getNewPassword().equals(request.getNewPasswordConfirm())) {

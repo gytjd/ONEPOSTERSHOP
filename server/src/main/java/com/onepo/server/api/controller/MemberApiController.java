@@ -58,7 +58,7 @@ public class MemberApiController {
      * 로그인
      */
     @PostMapping("/login")
-    public ResponseEntity<ResponseDto> login(@Validated @RequestBody MemberLoginRequest dto, BindingResult bindingResult, HttpServletRequest request) {
+    public ResponseEntity<MemberLoginResponse> login(@Validated @RequestBody MemberLoginRequest dto, BindingResult bindingResult, HttpServletRequest request) {
 
         String findUserId = dto.getUserId();
         Member findMember = memberService.findByUserId(findUserId);
@@ -67,13 +67,13 @@ public class MemberApiController {
         Member member = memberService.authenticated(findMember, findPassword);
 
         if (member.equals(null) || bindingResult.hasErrors()) {
-            return ResponseEntity.badRequest().body(new ResponseDto("아이디 또는 비밀번호를 확인해주세요."));
+            return ResponseEntity.badRequest().body(new MemberLoginResponse(null, null));
         }
 
         HttpSession session = request.getSession();
         session.setAttribute(SessionConst.LOGIN_MEMBER, member);
 
-        return ResponseEntity.ok().body(new ResponseDto("로그인 되었습니다."));
+        return ResponseEntity.ok().body(new MemberLoginResponse(member.getUserId(), member.getName()));
     }
 
     /**

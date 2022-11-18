@@ -21,8 +21,8 @@ public class Item {
     private Long id;
 
     private String itemName;
-    private int stockQuantity;
     private int price;
+    private int stockQuantity;
     private String description;
 
     public void createArt(String itemName, int stockQuantity, int price, String description) {

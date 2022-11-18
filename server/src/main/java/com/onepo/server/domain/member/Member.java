@@ -24,6 +24,8 @@ public class Member {
     private String password;
     private String email;
 
+    private String tokenId;
+
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="WISH_ID")
     private Wish wish;

@@ -36,6 +36,7 @@ public class MemberRepository {
                 .getResultList();
     }
 
-    //비밀번호 변경
+
+
 
 }

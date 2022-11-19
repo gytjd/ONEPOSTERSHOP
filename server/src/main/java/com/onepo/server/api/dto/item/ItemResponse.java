@@ -2,6 +2,9 @@ package com.onepo.server.api.dto.item;
 
 import com.onepo.server.domain.item.Item;
 import lombok.Data;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @Data
 public class ItemResponse {
@@ -11,11 +14,14 @@ public class ItemResponse {
     private Integer stockQuantity;
     private String description;
 
+    private List<String> images;
+
     public ItemResponse(Item item) {
         this.itemName=item.getItemName();
         this.price=item.getPrice();
         this.stockQuantity=item.getStockQuantity();
         this.description=item.getDescription();
+        this.images=item.getImages();
     }
 
     public static ItemResponse item_toDto(Item item) {

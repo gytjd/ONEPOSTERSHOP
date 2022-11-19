@@ -30,6 +30,13 @@ public class WishApiController {
 
     private final MemberService memberService;
 
+    /**
+     *
+     * @param id
+     * @param request
+     * @return
+     * 장바구니 등록
+     */
     @PostMapping("items/{itemId}/wish")
     public ResponseEntity<ResponseDto> wish_item(@PathVariable("itemId") Long id,
                                                  @RequestBody WishRequest request) {
@@ -51,16 +58,15 @@ public class WishApiController {
         Member byUserId = memberService.findByUserId(userId);
 
         Wish findWish = wishService.findWishByMemberId(byUserId.getId());
-        List<WishItem> wishItemsByWishId = wishService.findWishItemsByWishId(findWish.getId());
+        List<WishItem> findWishItemList = wishService.findWishItemsByWishId(findWish.getId());
 
         List<WishResponse> wishResponseList=new ArrayList<>();
 
+        for (WishItem wishItem:findWishItemList) {
+            wishResponseList.add(WishResponse.wish_toDto(wishItem));
+        }
         return ResponseEntity.ok().body(wishResponseList);
 
     }
-
-
-
-
 
 }

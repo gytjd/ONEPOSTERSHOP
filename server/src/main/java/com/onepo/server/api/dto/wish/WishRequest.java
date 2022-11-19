@@ -12,6 +12,5 @@ public class WishRequest {
 
     private String userId;
 
-    @NotNull
     private int count;
 }

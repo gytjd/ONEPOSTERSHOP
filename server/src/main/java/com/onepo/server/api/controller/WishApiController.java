@@ -43,7 +43,7 @@ public class WishApiController {
      */
     @PostMapping("items/{itemId}/wish")
     public ResponseEntity<ResponseDto> wish_item(@PathVariable("itemId") Long id,
-                                                 @Validated @RequestBody WishRequest request) {
+                                                 @RequestBody WishRequest request) {
 
         String userId = request.getUserId();
         Member findMember = memberService.findByUserId(userId);

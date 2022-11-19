@@ -8,9 +8,12 @@ public class MemberLoginResponse {
     private String userId;
     private String name;
 
-    public MemberLoginResponse(String userId, String name) {
+    private String token;
+
+    public MemberLoginResponse(String userId, String name, String token) {
         this.userId = userId;
         this.name = name;
+        this.token = token;
     }
 
 }

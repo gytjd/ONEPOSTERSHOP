@@ -18,12 +18,6 @@ public class WishApiController {
 
     private final MemberService memberService;
 
-    @PostMapping("items/{itemId}/wish")
-    public ResponseEntity<ResponseDto> wish_item(@PathVariable("itemId") Long id,
-                                                 @RequestBody OrderRequest request) {
-
-        return ResponseEntity.ok().body(new ItemResponse());
-    }
 
 
 }

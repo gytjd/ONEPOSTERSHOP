@@ -23,6 +23,7 @@ public class MemberRepository {
         return em.find(Member.class, id);
     }
 
+
     //전체 회원 조회
     public List<Member> findAll() {
         return em.createQuery("select m from Member As m", Member.class)
@@ -36,6 +37,10 @@ public class MemberRepository {
                 .getResultList();
     }
 
-    //비밀번호 변경
-
+    //회원 단건 조회 by UUID
+    public Member findOneByUUID(String token) {
+        return em.createQuery("select m from Member As m where m.token =: token", Member.class)
+                .setParameter("token", token)
+                .getSingleResult();
+    }
 }

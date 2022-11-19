@@ -44,7 +44,7 @@ public class MemberApiController {
      * 비밀번호 변경
      */
     @PutMapping("/member/modify/{id}")
-    public ResponseEntity<ResponseDto> modifyMember(@PathVariable("id") Long id,
+    public ResponseEntity<ResponseDto> modifyMember(@PathVariable("id") String id,
                                                     @Validated @RequestBody PasswordModifyRequest request, BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()) {
@@ -68,13 +68,13 @@ public class MemberApiController {
         Member member = memberService.authenticated(findMember, findPassword);
 
         if (member.equals(null) || bindingResult.hasErrors()) {
-            return ResponseEntity.badRequest().body(new MemberLoginResponse(null, null));
+            return ResponseEntity.badRequest().body(new MemberLoginResponse(null, null, null));
         }
 
         HttpSession session = request.getSession();
         session.setAttribute(SessionConst.LOGIN_MEMBER, member);
 
-        return ResponseEntity.ok().body(new MemberLoginResponse(member.getUserId(), member.getName()));
+        return ResponseEntity.ok().body(new MemberLoginResponse(member.getUserId(), member.getName(), member.getToken()));
     }
 
     /**

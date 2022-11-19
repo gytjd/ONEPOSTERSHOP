@@ -9,6 +9,7 @@ import org.hibernate.validator.constraints.Length;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
+import java.util.UUID;
 
 @Entity
 @Getter
@@ -24,6 +25,11 @@ public class Member {
     private String password;
     private String email;
 
+    private String token;
+
+    @Enumerated(EnumType.STRING)
+    private Grade grade;
+
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="WISH_ID")
     private Wish wish;
@@ -34,6 +40,8 @@ public class Member {
         this.userId = userId;
         this.password = password;
         this.email = email;
+        this.grade = Grade.USER;
+        this.token = UUID.randomUUID().toString();
     }
 
     public void passwordChange(String newPassword) {

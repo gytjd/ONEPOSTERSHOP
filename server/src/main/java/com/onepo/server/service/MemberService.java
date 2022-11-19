@@ -59,8 +59,8 @@ public class MemberService {
 
     //비밀번호 변경
     @Transactional
-    public void updateMember(Long id, PasswordModifyRequest request) {
-        Member member = memberRepository.findOne(id);
+    public void updateMember(String id, PasswordModifyRequest request) {
+        Member member = memberRepository.findOneByUUID(id);
 
         if (request.getNewPassword().equals(request.getNewPasswordConfirm())) {
             member.passwordChange(request.getNewPassword());

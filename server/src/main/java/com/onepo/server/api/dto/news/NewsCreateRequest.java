@@ -17,12 +17,7 @@ public class NewsCreateRequest {
     private MultipartFile imageFile;
 
     public News toEntity(String filePath) {
-        News news = new News();
-
-        news.setTitle(title);
-        news.setContent(content);
-        news.setLocalDateTime(LocalDateTime.now());
-        news.setImageFile(filePath);
+        News news = new News(title, content, LocalDateTime.now(),filePath);
 
         return news;
     }

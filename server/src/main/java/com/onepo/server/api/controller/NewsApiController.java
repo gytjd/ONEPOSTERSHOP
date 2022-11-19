@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequiredArgsConstructor
 @CrossOrigin
-@RequestMapping("/api")
+@RequestMapping("/api/news")
 public class NewsApiController {
 
     private final NewsService newsService;
@@ -30,7 +30,7 @@ public class NewsApiController {
     /**
      * 뉴스 등록
      */
-    @PostMapping("/news/save")
+    @PostMapping("/save")
     public ResponseEntity<ResponseDto> saveNews(@Validated NewsCreateRequest request) throws IOException {
         String storeImageFiles = fileStore.storeFile(request.getImageFile());
 
@@ -42,7 +42,7 @@ public class NewsApiController {
     /**
      * 뉴스 조회
      */
-    @GetMapping("/news")
+    @GetMapping
     public ResponseEntity<List<NewsResponse>> getNewsList() {
         List<News> newsList = newsService.findAll();
 
@@ -55,7 +55,7 @@ public class NewsApiController {
      * 뉴스 단건 조회
      * @param id
      */
-    @GetMapping("/news/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<NewsResponse> getNews(@PathVariable("id") Long id) {
         News news = newsService.findOne(id);
 
@@ -66,7 +66,7 @@ public class NewsApiController {
      * 뉴스 정보 변경
      * @param id
      */
-    @PutMapping("news/{id}")
+    @PutMapping("/modify/{id}")
     public ResponseEntity<ResponseDto> modifyNews(@PathVariable("id") Long id,
                                                   @Validated NewsModifyRequest request,
                                                   BindingResult bindingResult) throws IOException {
@@ -75,6 +75,17 @@ public class NewsApiController {
             return ResponseEntity.badRequest().body(new ResponseDto("게시물 정보를 한번 더 확인해주세요."));
         }
         newsService.updateNews(id, request);
-        return ResponseEntity.ok().body(new ResponseDto("수정이 완료되었습니다."));
+        return ResponseEntity.ok().body(new ResponseDto("게시물 수정이 완료되었습니다."));
+    }
+
+    /**
+     * 뉴스 정보 삭제
+     * @param id
+     */
+    @PostMapping("/delete/{id}")
+    public ResponseEntity<ResponseDto> deleteNews(@PathVariable("id") Long id) {
+        newsService.delete(id);
+
+        return ResponseEntity.ok().body(new ResponseDto("게시물이 삭제되었습니다."));
     }
 }

@@ -27,4 +27,8 @@ public class NewsRepository {
         return em.createQuery("select n from News As n", News.class)
                 .getResultList();
     }
+
+    public void remove(News news) {
+        em.remove(news);
+    }
 }

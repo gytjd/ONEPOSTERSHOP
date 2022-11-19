@@ -28,4 +28,8 @@ public class WorkRepository {
         return em.createQuery("select w from Work w", Work.class)
                 .getResultList();
     }
+
+    public void remove(Work work) {
+        em.remove(work);
+    }
 }

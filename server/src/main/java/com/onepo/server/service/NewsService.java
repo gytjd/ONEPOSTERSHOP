@@ -33,8 +33,13 @@ public class NewsService {
 
     public void updateNews(Long id, NewsModifyRequest request) throws IOException {
         News news = newsRepository.findById(id);
-        String storeImageFiles = fileStore.storeFile(request.getImageFile());
+        String storeImageFile = fileStore.storeFile(request.getImageFile());
 
-        news.modify(request.getTitle(), request.getContent(), storeImageFiles);
+        news.modify(request.getTitle(), request.getContent(), storeImageFile);
+    }
+
+    public void delete(Long id) {
+        News news = newsRepository.findById(id);
+        newsRepository.remove(news);
     }
 }

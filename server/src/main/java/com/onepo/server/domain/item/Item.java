@@ -3,16 +3,15 @@ package com.onepo.server.domain.item;
 
 import com.onepo.server.exception.NotEnoughStockException;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Getter
-@Setter
+@NoArgsConstructor
 public class Item {
 
     @Id
@@ -24,6 +23,17 @@ public class Item {
     private int price;
     private int stockQuantity;
     private String description;
+
+    @ElementCollection
+    private List<String> images;
+
+    public Item(String itemName, Integer price, Integer stockQuantity, String description, List<String> filePath) {
+        this.itemName = itemName;
+        this.price = price;
+        this.stockQuantity = stockQuantity;
+        this.description = description;
+        this.images = filePath;
+    }
 
     public void createArt(String itemName, int stockQuantity, int price, String description) {
         this.itemName = itemName;
@@ -46,5 +56,13 @@ public class Item {
         }
 
         this.stockQuantity=restStock;
+    }
+
+    public void modify(String itemName, Integer price, Integer stockQuantity, String description, List<String> storeImageFiles) {
+        this.itemName = itemName;
+        this.price = price;
+        this.stockQuantity = stockQuantity;
+        this.description = description;
+        this.images = storeImageFiles;
     }
 }

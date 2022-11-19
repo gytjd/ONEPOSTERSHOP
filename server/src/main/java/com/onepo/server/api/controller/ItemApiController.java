@@ -4,9 +4,11 @@ import com.onepo.server.api.dto.ResponseDto;
 import com.onepo.server.api.dto.item.ItemRegisterRequest;
 import com.onepo.server.api.dto.item.ItemResponse;
 import com.onepo.server.domain.item.Item;
+import com.onepo.server.file.FileStore;
 import com.onepo.server.service.ItemService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -21,18 +23,17 @@ public class ItemApiController {
 
     private final ItemService itemService;
 
-
+    private final FileStore fileStore;
     /**
      *
      * 아이템 등록
      */
 
     @PostMapping("/items/register")
-    public ResponseEntity<ResponseDto> saveItem(@RequestBody ItemRegisterRequest request) throws IOException {
+    public ResponseEntity<ResponseDto> saveItem(@Validated ItemRegisterRequest request) throws IOException {
+        List<String> storeFiles = fileStore.storeFiles(request.getImages());
 
-        System.out.println("sex");
-
-        Item item=request.toEntity();
+        Item item=request.toEntity(storeFiles);
         itemService.saveItem(item);
 
         return ResponseEntity.ok().body(new ResponseDto("아이템 등록이 완료되었습니다."));

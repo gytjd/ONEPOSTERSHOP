@@ -1,7 +1,5 @@
 package com.onepo.server.api.dto.item;
 
-
-import com.onepo.server.domain.item.Item;
 import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -10,8 +8,7 @@ import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Data
-public class ItemRegisterRequest {
-
+public class ItemModifyRequest {
     @NotBlank(message = "상품 이름을 입력해주세요.")
     private String itemName;
 
@@ -25,12 +22,4 @@ public class ItemRegisterRequest {
     private String description;
 
     private List<MultipartFile> images;
-
-    public Item toEntity(List<String> filePath) {
-        Item item=new Item(itemName, price, stockQuantity, description, filePath);
-
-        return item;
-    }
-
-
 }

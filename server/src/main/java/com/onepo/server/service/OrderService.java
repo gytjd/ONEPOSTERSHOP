@@ -99,8 +99,6 @@ public class OrderService {
 
         OrderItem orderItem = OrderItem.createOrderItem(findMember,item,count);
 
-        item.removeStock(count);
-
         save_order_item(orderItem);
 
         return orderItem;

@@ -2,6 +2,9 @@ package com.onepo.server.api.dto.wish;
 
 import lombok.Data;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
 @Data
 public class WishRequest {
 
@@ -9,9 +12,6 @@ public class WishRequest {
 
     private String userId;
 
-    private String userName;
-
-    private Long itemId;
-
+    @NotNull
     private int count;
 }

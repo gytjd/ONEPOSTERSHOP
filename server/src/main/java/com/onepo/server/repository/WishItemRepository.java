@@ -1,5 +1,6 @@
 package com.onepo.server.repository;
 
+import com.onepo.server.api.dto.wish.WishItemRequest;
 import com.onepo.server.domain.wish.WishItem;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -9,6 +10,7 @@ public interface WishItemRepository extends JpaRepository<WishItem,Integer> {
 
     WishItem findByWishIdAndItemId(Long wishId,Long itemId);
     WishItem findWishItemById(Long id);
+
     List<WishItem> findWishItemsByItemId(Long id);
 
     List<WishItem> findWishItemsByWishId(Long id);

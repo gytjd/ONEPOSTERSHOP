@@ -79,7 +79,7 @@ public class OrderService {
         Long orderId = add_Wish_Order(member,delivery, orderItemList);
 
 
-        delete_All_Wish(wishByMemberId,userWishList);
+        delete_All_Wish(wishByMemberId);
 
         return orderId;
 
@@ -167,7 +167,7 @@ public class OrderService {
     }
 
     @Transactional
-    public void delete_All_Wish(Wish wish,List<WishItem> wishItem) {
+    public void delete_All_Wish(Wish wish) {
 
         wishService.delete_All_wishItem(wish.getId());
         wishService.delete_Wish(wish);

@@ -12,19 +12,28 @@ public class WishResponse {
 
     // 사진
 
+    private Long wishItemId;
     private Item item;
-    private String itemName;
-    private int price;
+
     private int wishCount;
 
     public WishResponse(WishItem wishItem) {
         this.item=wishItem.getItem();
-        this.itemName = wishItem.getItem().getItemName();
-        this.price = wishItem.getItem().getPrice();
+        this.wishItemId=wishItem.getId();
         this.wishCount = wishItem.getWishCount();
+    }
+
+    public WishResponse() {
+        this.item=null;
+        this.wishItemId=null;
+        this.wishCount=0;
     }
 
     public static WishResponse wish_toDto(WishItem wishItem) {
         return new WishResponse(wishItem);
+    }
+
+    public static WishResponse noneWish_toDto() {
+        return new WishResponse();
     }
 }

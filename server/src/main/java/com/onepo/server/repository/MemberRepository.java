@@ -43,4 +43,5 @@ public class MemberRepository {
                 .setParameter("token", token)
                 .getSingleResult();
     }
+
 }

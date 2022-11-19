@@ -10,11 +10,9 @@ import java.util.List;
 @Data
 public class WishResponse {
 
-    // 사진
 
     private Long wishItemId;
     private Item item;
-
     private int wishCount;
 
     public WishResponse(WishItem wishItem) {

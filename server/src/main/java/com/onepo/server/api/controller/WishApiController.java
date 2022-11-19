@@ -58,16 +58,16 @@ public class WishApiController {
     /**
      *
      * @param id
-     * @param wishListRequest
+     * @param
      * @return
      * 장바구니 리스트 확인
      */
 
-    @PostMapping("/member/{memberId}/wishList")
-    public ResponseEntity<List<WishResponse>> all_wish(@PathVariable("memberId") Long id,
-                                                       @RequestBody WishListRequest wishListRequest) {
-        String userId = wishListRequest.getUserId();
-        Member byUserId = memberService.findByUserId(userId);
+    @GetMapping("/member/{memberId}/wishList")
+    public ResponseEntity<List<WishResponse>> find_all_wish(@PathVariable("memberId") Long id) {
+
+
+        Member byUserId = memberService.findOne(id);
 
         Wish findWish = wishService.findWishByMemberId(byUserId.getId());
 
@@ -94,6 +94,8 @@ public class WishApiController {
      * @return
      * 장바구니 상품 하나 삭제
      */
+
+    @DeleteMapping
     @PostMapping("/member/{memberId}/wishList/deleteWishOne")
     public ResponseEntity<ResponseDto> delete_One(@PathVariable("memberId") Long id,
                                                   @RequestBody WishItemRequest wishItemRequest) {

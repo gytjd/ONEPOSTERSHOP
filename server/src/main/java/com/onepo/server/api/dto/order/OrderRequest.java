@@ -11,8 +11,7 @@ import javax.validation.constraints.NotNull;
 @Data
 public class OrderRequest {
 
-    private Long memberId;
-    private String userId;
+    private String token;
 
     @NotNull(message = "주문할 상품의 개수를 입력해주세요.")
     private int count;

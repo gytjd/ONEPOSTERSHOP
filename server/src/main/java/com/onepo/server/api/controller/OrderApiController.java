@@ -50,14 +50,13 @@ public class OrderApiController {
             return ResponseEntity.ok().body(new ResponseDto("주문 정보를 다시 입력하세요."));
         }
 
-        String userId = orderRequest.getUserId();
-        Member findMember = memberService.findByUserId(userId);
+        Member member = memberService.findByTokenId(orderRequest.getToken());
 
         Item findItem = itemService.findOne(id);
 
         Delivery delivery= orderRequest.to_Entity();
 
-        orderService.order_One(findMember,delivery,findItem, orderRequest.getCount());
+        orderService.order_One(member,delivery,findItem, orderRequest.getCount());
 
         return ResponseEntity.ok().body(new ResponseDto("주문이 완료되었습니다."));
     }
@@ -65,42 +64,42 @@ public class OrderApiController {
 
     /**
      *
-     * @param id
+     *
      * @param orderRequest
      * @param result
      * @return
      * 장바구니에 담겨 있는 상품들 주문
      */
-    @PostMapping("member/{memberId}/wishList/order")
-    public ResponseEntity<ResponseDto> order_wish(@PathVariable("memberId") Long id,
+    @PostMapping("member/{tokenId}/wishList/order")
+    public ResponseEntity<ResponseDto> order_wish(@PathVariable("tokenId") String token,
                                                   @Validated @RequestBody OrderRequest orderRequest,
                                                   BindingResult result) {
 
         if(result.hasErrors()) {
             return ResponseEntity.ok().body(new ResponseDto("주문 정보를 다시 입력하세요"));
         }
-        String userId = orderRequest.getUserId();
-        Member findMember = memberService.findByUserId(userId);
+
+        Member member = memberService.findByTokenId(token);
 
         Delivery delivery= orderRequest.to_Entity();
 
-        orderService.order_Wish(findMember,delivery);
+        orderService.order_Wish(member,delivery);
 
         return ResponseEntity.ok().body(new ResponseDto("주문이 완료되었습니다."));
     }
 
     /**
      *
-     * @param id
+     *
      * @return
      * 주문 내역 전체 확인
      */
-    @GetMapping("/member/{memberId}/orderList")
-    public ResponseEntity<List<OrderResponse>> find_all_Order(@PathVariable("memberId") Long id)  {
+    @GetMapping("/member/{tokenId}/orderList")
+    public ResponseEntity<List<OrderResponse>> find_all_Order(@PathVariable("tokenId") String token)  {
 
-        Member findMember = memberService.findOne(id);
+        Member member = memberService.findByTokenId(token);
 
-        List<Order> findOrders = orderService.findOrdersByMemberId(findMember.getId());
+        List<Order> findOrders = orderService.findOrdersByMemberId(member.getId());
 
         List<OrderResponse> orderResponseList=new ArrayList<>();
 
@@ -113,19 +112,19 @@ public class OrderApiController {
 
     /**
      *
-     * @param id
+     *
      * @return
      *
      * 모든 주문 삭제
      */
 
-    @GetMapping("/member/{memberId}/orderList/deleteAll")
-    public ResponseEntity<ResponseDto> delete_all_Order(@PathVariable("memberId") Long id) {
-        Member findMember = memberService.findOne(id);
-        List<Order> findOrders = orderService.findOrdersByMemberId(findMember.getId());
+    @GetMapping("/member/{tokenId}/orderList/deleteAll")
+    public ResponseEntity<ResponseDto> delete_all_Order(@PathVariable("tokenId") String token) {
+        Member member = memberService.findByTokenId(token);
+        List<Order> findOrders = orderService.findOrdersByMemberId(member.getId());
 
         for (Order order:findOrders) {
-            orderService.order_Cancel(findMember,order.getId());
+            orderService.order_Cancel(member,order.getId());
         }
 
         return ResponseEntity.ok().body(new ResponseDto("모든 주문이 삭제 되었습니다."));
@@ -133,18 +132,18 @@ public class OrderApiController {
 
     /**
      *
-     * @param id
+     *
      * @param request
      * @return
      *
      * 한개 주문 삭제
      */
 
-    @PostMapping("/member/{memberId}/orderList/deleteOne")
-    public ResponseEntity<ResponseDto> delete_one_order(@PathVariable("memberId") Long id,
+    @PostMapping("/member/{tokenId}/orderList/deleteOne")
+    public ResponseEntity<ResponseDto> delete_one_order(@PathVariable("tokenId") String token,
                                                         @RequestBody OrderListRequest request) {
-        Member findMember = memberService.findOne(id);
-        orderService.order_Cancel(findMember, request.getOrderid());
+        Member member = memberService.findByTokenId(token);
+        orderService.order_Cancel(member, request.getOrderid());
 
         return ResponseEntity.ok().body(new ResponseDto("주문이 삭제 되었습니다."));
     }

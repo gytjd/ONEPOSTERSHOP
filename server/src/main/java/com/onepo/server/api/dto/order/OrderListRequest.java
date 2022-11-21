@@ -5,7 +5,6 @@ import lombok.Data;
 @Data
 public class OrderListRequest {
 
-    private Long orderid;
-    private Long userId;
+    private Long orderId;
 
 }

@@ -44,13 +44,11 @@ public class WishApiController {
     @PostMapping("items/{itemId}/wish")
     public ResponseEntity<ResponseDto> wish_item(@PathVariable("itemId") Long id,
                                                  @RequestBody WishRequest request) {
-
-        String userId = request.getUserId();
-        Member findMember = memberService.findByUserId(userId);
+        Member member = memberService.findByTokenId(request.getToken());
 
         Item findItem = itemService.findOne(id);
 
-        wishService.addCart(findMember,findItem, request.getCount());
+        wishService.addCart(member,findItem, request.getCount());
 
         return ResponseEntity.ok().body(new ResponseDto("장바구니에 등록 되었습니다."));
     }
@@ -94,7 +92,6 @@ public class WishApiController {
      * 장바구니 상품 하나 삭제
      */
 
-    @DeleteMapping
     @PostMapping("/member/{tokenId}/wishList/deleteWishOne")
     public ResponseEntity<ResponseDto> delete_One(@PathVariable("tokenId") String token,
                                                   @RequestBody WishItemRequest wishItemRequest) {

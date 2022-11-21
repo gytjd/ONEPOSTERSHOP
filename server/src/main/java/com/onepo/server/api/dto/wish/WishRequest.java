@@ -8,9 +8,7 @@ import javax.validation.constraints.NotNull;
 @Data
 public class WishRequest {
 
-    private Long memberId;
-
-    private String userId;
+    private String token;
 
     private int count;
 }

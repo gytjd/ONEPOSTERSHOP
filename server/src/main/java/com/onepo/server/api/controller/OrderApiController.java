@@ -4,6 +4,7 @@ import com.onepo.server.api.dto.ResponseDto;
 import com.onepo.server.api.dto.order.OrderListRequest;
 import com.onepo.server.api.dto.order.OrderRequest;
 import com.onepo.server.api.dto.order.OrderResponse;
+import com.onepo.server.api.dto.order.OrderWishRequest;
 import com.onepo.server.domain.delivery.Delivery;
 import com.onepo.server.domain.item.Item;
 import com.onepo.server.domain.member.Member;
@@ -65,14 +66,14 @@ public class OrderApiController {
     /**
      *
      *
-     * @param orderRequest
+     * @param
      * @param result
      * @return
      * 장바구니에 담겨 있는 상품들 주문
      */
     @PostMapping("member/{tokenId}/wishList/order")
     public ResponseEntity<ResponseDto> order_wish(@PathVariable("tokenId") String token,
-                                                  @Validated @RequestBody OrderRequest orderRequest,
+                                                  @Validated @RequestBody OrderWishRequest orderWishRequest,
                                                   BindingResult result) {
 
         if(result.hasErrors()) {
@@ -81,7 +82,7 @@ public class OrderApiController {
 
         Member member = memberService.findByTokenId(token);
 
-        Delivery delivery= orderRequest.to_Entity();
+        Delivery delivery= orderWishRequest.to_Entity();
 
         orderService.order_Wish(member,delivery);
 
@@ -143,7 +144,7 @@ public class OrderApiController {
     public ResponseEntity<ResponseDto> delete_one_order(@PathVariable("tokenId") String token,
                                                         @RequestBody OrderListRequest request) {
         Member member = memberService.findByTokenId(token);
-        orderService.order_Cancel(member, request.getOrderid());
+        orderService.order_Cancel(member, request.getOrderId());
 
         return ResponseEntity.ok().body(new ResponseDto("주문이 삭제 되었습니다."));
     }

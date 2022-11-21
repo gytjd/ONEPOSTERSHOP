@@ -156,6 +156,10 @@ public class WishService {
         return wishItemRepository.findByWishIdAndItemId(wishId,itemId);
     }
 
+    public WishItem findWishItemById(Long id) {
+        return wishItemRepository.findWishItemById(id);
+    }
+
     public List<WishItem> findWishItemsByWishId(Long id) {
         return wishItemRepository.findWishItemsByWishId(id);
     }
@@ -170,14 +174,17 @@ public class WishService {
      * 공통 Service
      */
 
-    @Transactional void delete_Wish(Wish wish) {
+    @Transactional
+    public void delete_Wish(Wish wish) {
         wishRepository.delete(wish);
     }
 
-    @Transactional void delete_Wish_Item(WishItem wishItem) {
+    @Transactional
+    public void delete_Wish_Item(WishItem wishItem) {
         wishItemRepository.delete(wishItem);
     }
 
+    @Transactional
     public void delete_All_wishItem(Long id) {
         wishItemRepository.deleteAllByWishId(id);
     }

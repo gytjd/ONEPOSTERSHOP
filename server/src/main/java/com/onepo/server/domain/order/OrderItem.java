@@ -13,7 +13,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @NoArgsConstructor
-public class OrderItem {
+public class  OrderItem {
 
     @Id
     @GeneratedValue

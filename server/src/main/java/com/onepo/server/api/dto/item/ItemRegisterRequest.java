@@ -15,10 +15,10 @@ public class ItemRegisterRequest {
     @NotBlank(message = "상품 이름을 입력해주세요.")
     private String itemName;
 
-    @NotNull
+    @NotNull(message = "상품 가격을 입력해주세요.")
     private Integer price;
 
-    @NotNull
+    @NotNull(message = "상품 수량을 입력해주세요.")
     private Integer stockQuantity;
 
     @NotBlank(message = "상품 설명을 입력해주세요.")

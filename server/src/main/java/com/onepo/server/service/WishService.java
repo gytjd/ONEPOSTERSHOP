@@ -5,7 +5,6 @@ import com.onepo.server.domain.member.Member;
 import com.onepo.server.domain.wish.Wish;
 import com.onepo.server.domain.wish.WishItem;
 import com.onepo.server.exception.NotExistCartException;
-import com.onepo.server.repository.ItemRepository;
 import com.onepo.server.repository.WishItemRepository;
 import com.onepo.server.repository.WishRepository;
 import lombok.RequiredArgsConstructor;

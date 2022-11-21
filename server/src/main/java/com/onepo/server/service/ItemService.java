@@ -29,15 +29,20 @@ public class ItemService {
     }
 
     public Item findOne(Long id) {
-        return itemRepository.findOne(id);
+        return itemRepository.findItemById(id);
     }
 
     @Transactional
     public void updateItem(Long itemId, ItemModifyRequest request) throws IOException {
-        Item findItem = itemRepository.findOne(itemId);
+        Item findItem = itemRepository.findItemById(itemId);
         List<String> storeImageFiles = fileStore.storeFiles(request.getImages());
 
         findItem.modify(request.getItemName(), request.getPrice(), request.getStockQuantity(),
                 request.getDescription(), storeImageFiles);
+    }
+
+    @Transactional
+    public void delete_one(Item item) {
+        itemRepository.delete(item);
     }
 }

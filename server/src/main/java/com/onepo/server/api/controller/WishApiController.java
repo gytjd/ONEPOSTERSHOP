@@ -113,7 +113,7 @@ public class WishApiController {
      * 장바구니 전체 삭제
      */
 
-    @GetMapping("/member/{tokenId}/wishList/deleteAllWish")
+    @PostMapping("/member/{tokenId}/wishList/deleteAllWish")
     public ResponseEntity<ResponseDto> delete_All(@PathVariable("tokenId") String token) {
         Member member = memberService.findByTokenId(token);
 

@@ -119,7 +119,7 @@ public class OrderApiController {
      * 모든 주문 삭제
      */
 
-    @GetMapping("/member/{tokenId}/orderList/deleteAll")
+    @PostMapping("/member/{tokenId}/orderList/deleteAll")
     public ResponseEntity<ResponseDto> delete_all_Order(@PathVariable("tokenId") String token) {
         Member member = memberService.findByTokenId(token);
         List<Order> findOrders = orderService.findOrdersByMemberId(member.getId());

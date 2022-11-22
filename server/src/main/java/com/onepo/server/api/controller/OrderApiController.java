@@ -87,10 +87,6 @@ public class OrderApiController {
         orderService.order_Wish(member,delivery);
 
 
-
-
-
-
         return ResponseEntity.ok().body(new ResponseDto("주문이 완료되었습니다."));
     }
 

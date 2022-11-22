@@ -27,13 +27,12 @@ public class OrderService {
     private final OrderRepository orderRepository;
 
     private final OrderItemRepository orderItemRepository;
-    private final MemberService memberService;
     private final WishService wishService;
 
 
     /**
      *
-     * @param userId
+     * @param
      * @param item
      * @param wishItem
      * @return
@@ -41,10 +40,9 @@ public class OrderService {
      */
 
     @Transactional
-    public OrderItem add_Wish_Item(Long userId, Item item, WishItem wishItem) {
-        Member findMember = memberService.findOne(userId);
+    public OrderItem add_Wish_Item(Item item, WishItem wishItem) {
 
-        OrderItem orderItem = OrderItem.createOrderItem(findMember,item,wishItem);
+        OrderItem orderItem = OrderItem.createOrderItem(item,wishItem);
 
         save_order_item(orderItem);
 
@@ -68,9 +66,7 @@ public class OrderService {
         List<OrderItem> orderItemList = new ArrayList<>();
 
         for (WishItem wishItem : userWishList) {
-            OrderItem orderItem = add_Wish_Item(member.getId(),
-                    wishItem.getItem(),
-                    wishItem);
+            OrderItem orderItem = add_Wish_Item(wishItem.getItem(), wishItem);
             orderItemList.add(orderItem);
 
             wishItem.getItem().removeStock(wishItem.getWishCount());
@@ -94,10 +90,9 @@ public class OrderService {
 
 
     @Transactional
-    public OrderItem add_One_Item(Long userId, Item item,int count) {
-        Member findMember = memberService.findOne(userId);
+    public OrderItem add_One_Item(Item item,int count) {
 
-        OrderItem orderItem = OrderItem.createOrderItem(findMember,item,count);
+        OrderItem orderItem = OrderItem.createOrderItem(item,count);
 
         save_order_item(orderItem);
 
@@ -116,7 +111,7 @@ public class OrderService {
 
     @Transactional
     public Long order_One(Member member,Delivery delivery,Item item,int count) {
-        OrderItem createOrderOne = add_One_Item(member.getId(), item, count);
+        OrderItem createOrderOne = add_One_Item(item, count);
 
         List<OrderItem> orderItem=new ArrayList<>();
         orderItem.add(createOrderOne);
@@ -160,15 +155,15 @@ public class OrderService {
 
     }
 
-    public List<Order> order_list(Member member) { // 사용자가 주문한 전체 주문 확인
-        return findOrdersByMemberId(member.getId());
-    }
-
     @Transactional
     public void delete_All_Wish(Wish wish) {
 
         wishService.delete_All_wishItem(wish.getId());
         wishService.delete_Wish(wish);
+    }
+
+    public List<Order> order_list(Member member) { // 사용자가 주문한 전체 주문 확인
+        return findOrdersByMemberId(member.getId());
     }
 
 

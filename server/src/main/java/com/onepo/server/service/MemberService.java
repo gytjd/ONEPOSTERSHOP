@@ -69,4 +69,8 @@ public class MemberService {
             throw new NewPasswordWrong("새 비밀번호가 일치하지 않습니다.");
         }
     }
+
+    public Member findByTokenId(String token) {
+        return memberRepository.findOneByUUID(token);
+    }
 }

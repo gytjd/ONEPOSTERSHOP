@@ -76,7 +76,6 @@ public class Order {
     }
 
 
-
     // 장바구니 주문
 
     public static Order createOrder(Member member,Delivery delivery,List<OrderItem> orderItem) {
@@ -85,7 +84,5 @@ public class Order {
 
         return order;
     }
-
-
 
 }

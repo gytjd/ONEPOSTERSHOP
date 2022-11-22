@@ -9,12 +9,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 @Data
-public class OrderRequest {
-
-    private String token;
-
-    @NotNull(message = "주문할 상품의 개수를 입력해주세요.")
-    private int count;
+public class OrderWishRequest {
 
     @NotBlank(message = "시 를 입력해주세요")
     private String city;

@@ -41,7 +41,7 @@ public class ItemApiController {
 
     /**
      *
-     * 아이템 조회
+     * 아이템 전체 조회
      */
 
     @GetMapping("/items")
@@ -70,8 +70,33 @@ public class ItemApiController {
         return ResponseEntity.ok().body(new ItemResponse(one));
     }
 
+    /**
+     *
+     *
+     * 아이템 한개 삭제
+     */
+    @GetMapping("items/{itemId}/deleteOne")
+    public ResponseEntity<ResponseDto> delete_one_item(@PathVariable("itemId") Long id) {
+        Item item = itemService.findOne(id);
+        itemService.delete_one(item);
 
+        return ResponseEntity.ok().body(new ResponseDto(item.getItemName() + "상품이 삭제 되었습니다."));
+    }
 
+    /**
+     *
+     *
+     * 아이템 전체 삭제
+     */
 
+    @GetMapping("items/{itemId}/deleteAll")
+    public ResponseEntity<ResponseDto> delete_all_item(@PathVariable String itemId) {
+        List<Item> items = itemService.findAll();
+        for(Item item:items) {
+            itemService.delete_one(item);
+        }
+
+        return ResponseEntity.ok().body(new ResponseDto("모든 상품이 삭제 되었습니다."));
+    }
 }
 

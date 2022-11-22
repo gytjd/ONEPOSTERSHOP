@@ -44,32 +44,29 @@ public class WishApiController {
     @PostMapping("items/{itemId}/wish")
     public ResponseEntity<ResponseDto> wish_item(@PathVariable("itemId") Long id,
                                                  @RequestBody WishRequest request) {
-
-        String userId = request.getUserId();
-        Member findMember = memberService.findByUserId(userId);
+        Member member = memberService.findByTokenId(request.getToken());
 
         Item findItem = itemService.findOne(id);
 
-        wishService.addCart(findMember,findItem, request.getCount());
+        wishService.addCart(member,findItem, request.getCount());
 
         return ResponseEntity.ok().body(new ResponseDto("장바구니에 등록 되었습니다."));
     }
 
     /**
      *
-     * @param id
-     * @param
+     *
      * @return
      * 장바구니 리스트 확인
      */
 
-    @GetMapping("/member/{memberId}/wishList")
-    public ResponseEntity<List<WishResponse>> find_all_wish(@PathVariable("memberId") Long id) {
+    @GetMapping("/member/{tokenId}/wishList")
+    public ResponseEntity<List<WishResponse>> find_all_wish(@PathVariable("tokenId") String token) {
 
 
-        Member byUserId = memberService.findOne(id);
+        Member member = memberService.findByTokenId(token);
 
-        Wish findWish = wishService.findWishByMemberId(byUserId.getId());
+        Wish findWish = wishService.findWishByMemberId(member.getId());
 
         List<WishResponse> wishResponseList = new ArrayList<>();
 
@@ -89,38 +86,36 @@ public class WishApiController {
 
     /**
      *
-     * @param id
+     *
      * @param wishItemRequest
      * @return
      * 장바구니 상품 하나 삭제
      */
 
-    @DeleteMapping
-    @PostMapping("/member/{memberId}/wishList/deleteWishOne")
-    public ResponseEntity<ResponseDto> delete_One(@PathVariable("memberId") Long id,
+    @PostMapping("/member/{tokenId}/wishList/deleteWishOne")
+    public ResponseEntity<ResponseDto> delete_One(@PathVariable("tokenId") String token,
                                                   @RequestBody WishItemRequest wishItemRequest) {
 
-        String userId = wishItemRequest.getUserId();
-        Member byUserId = memberService.findByUserId(userId);
+        Member member = memberService.findByTokenId(token);
 
         WishItem findwishItem = wishService.findWishItemById(wishItemRequest.getWishItemId());
         Item item = findwishItem.getItem();
 
-        wishService.subCart(byUserId,item,findwishItem.getWishCount());
+        wishService.subCart(member,item,findwishItem.getWishCount());
 
         return ResponseEntity.ok().body(new ResponseDto(findwishItem.getItem().getItemName()+" 상품을 장바구니에서 삭제하였습니다."));
     }
 
     /**
      *
-     * @param id
+     *
      * @return
      * 장바구니 전체 삭제
      */
 
-    @GetMapping("/member/{memberId}/wishList/deleteAllWish")
-    public ResponseEntity<ResponseDto> delete_All(@PathVariable("memberId") Long id) {
-        Member member = memberService.findOne(id);
+    @PostMapping("/member/{tokenId}/wishList/deleteAllWish")
+    public ResponseEntity<ResponseDto> delete_All(@PathVariable("tokenId") String token) {
+        Member member = memberService.findByTokenId(token);
 
         wishService.cancelCart(member);
 

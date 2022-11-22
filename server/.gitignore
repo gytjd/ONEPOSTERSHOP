@@ -13,7 +13,6 @@ build/
 .settings
 .springBeans
 .sts4-cache
-*.properties
 bin/
 !**/src/main/**/bin/
 !**/src/test/**/bin/
@@ -36,3 +35,10 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### sp
+application.properties
+application-aws.yml
+*.DS_Store
+*.log
+

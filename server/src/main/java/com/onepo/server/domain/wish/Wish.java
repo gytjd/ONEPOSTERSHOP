@@ -23,7 +23,7 @@ public class Wish {
     @Column(name="WISH_ID")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="MEMBER_ID")
     private Member member;
 

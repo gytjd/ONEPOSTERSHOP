@@ -34,14 +34,11 @@ public class  OrderItem {
 
 
 
-
-
     // 장바구니 주문
     public static OrderItem createOrderItem(Item item,WishItem wishItem) {
         OrderItem orderItem = new OrderItem();
 
         orderItem.setItem(item);
-
         orderItem.setOrderPrice(wishItem.getItem().getPrice());
         orderItem.setCount(wishItem.getWishCount());
         orderItem.setTotalPrice(wishItem.getItem().getPrice() * wishItem.getWishCount());
@@ -55,7 +52,6 @@ public class  OrderItem {
         OrderItem orderItem = new OrderItem();
 
         orderItem.setItem(item);
-
         orderItem.setOrderPrice(item.getPrice());
         orderItem.setCount(count);
         orderItem.setTotalPrice(item.getPrice()*count);

@@ -27,7 +27,6 @@ public class OrderService {
     private final OrderRepository orderRepository;
 
     private final OrderItemRepository orderItemRepository;
-    private final MemberService memberService;
     private final WishService wishService;
 
 

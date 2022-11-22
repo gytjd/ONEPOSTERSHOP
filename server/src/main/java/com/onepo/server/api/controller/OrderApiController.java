@@ -32,8 +32,6 @@ public class OrderApiController {
     private final MemberService memberService;
     private final ItemService itemService;
 
-    private final WishService wishService;
-
 
     /**
      *

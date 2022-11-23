@@ -29,8 +29,9 @@ public class MemberApiController {
     public ResponseEntity<ResponseDto> saveMember(@Validated @RequestBody MemberSignUpRequest request, BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()) {
-            return null;
+            ResponseEntity.ok().body(new ResponseDto("정보를 잘못 입력하셨습니다."));
         }
+
         Member member = new Member();
 
         member.register(request.getName(), request.getUserId(), request.getPassword(), request.getEmail());

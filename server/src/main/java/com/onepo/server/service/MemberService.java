@@ -18,7 +18,12 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final WishService wishService;
 
-    //회원가입
+    /**
+     *
+     * @param member
+     * @return
+     * 회원가입
+     */
     @Transactional
     public Long join(Member member) {
         validateDuplicateUserId(member);    //아이디 중복 검사
@@ -27,7 +32,12 @@ public class MemberService {
         return member.getId();
     }
 
-    //아이디 중복 검사
+    /**
+     *
+     * @param member
+     * 아이디 중복 검사
+     */
+
     private void validateDuplicateUserId(Member member) {
         List<Member> members = memberRepository.findByUserId(member.getUserId());
         if (!members.isEmpty()) {
@@ -35,12 +45,17 @@ public class MemberService {
         }
     }
 
-    //회원 단건 조회
+    /**
+     *
+     * @param id
+     * @return
+     * Member 조회 기능
+     */
     public Member findOne(Long id) {
         return memberRepository.findOne(id);
     }
 
-    //전체 회원 조회
+
     public List<Member> findAll() {
         return memberRepository.findAll();
     }
@@ -50,6 +65,10 @@ public class MemberService {
         return users.get(0);
     }
 
+    public Member findByTokenId(String token) {
+        return memberRepository.findOneByUUID(token);
+    }
+
     public Member authenticated(Member member, String password) {
         if (member.getPassword().equals(password)) {
             return member;
@@ -57,7 +76,13 @@ public class MemberService {
         return null;
     }
 
-    //비밀번호 변경
+
+    /**
+     *
+     * @param id
+     * @param request
+     * 비밀번호 변경
+     */
     @Transactional
     public void updateMember(String id, PasswordModifyRequest request) {
         Member member = memberRepository.findOneByUUID(id);
@@ -70,7 +95,4 @@ public class MemberService {
         }
     }
 
-    public Member findByTokenId(String token) {
-        return memberRepository.findOneByUUID(token);
-    }
 }

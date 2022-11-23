@@ -19,11 +19,21 @@ public class ItemService {
     private final ItemRepository itemRepository;
     private final FileStore fileStore;
 
+    /**
+     *
+     * @param item
+     * 상품 등록
+     */
     @Transactional
     public void saveItem(Item item) {
         itemRepository.save(item);
     }
 
+    /**
+     *
+     * @return
+     * 상품 조회 기능
+     */
     public List<Item> findAll() {
         return itemRepository.findAll();
     }
@@ -32,6 +42,13 @@ public class ItemService {
         return itemRepository.findItemById(id);
     }
 
+    /**
+     *
+     * @param itemId
+     * @param request
+     * @throws IOException
+     * 상품 업데이트
+     */
     @Transactional
     public void updateItem(Long itemId, ItemModifyRequest request) throws IOException {
         Item findItem = itemRepository.findItemById(itemId);
@@ -40,6 +57,12 @@ public class ItemService {
         findItem.modify(request.getItemName(), request.getPrice(), request.getStockQuantity(),
                 request.getDescription(), storeImageFiles);
     }
+
+    /**
+     *
+     * @param item
+     * 상품 삭제
+     */
 
     @Transactional
     public void delete_one(Item item) {

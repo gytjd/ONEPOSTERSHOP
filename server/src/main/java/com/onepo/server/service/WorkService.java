@@ -21,11 +21,24 @@ public class WorkService {
     private final WorkRepository workRepository;
     private final FileStore fileStore;
 
+    /**
+     *
+     * @param work
+     * @return
+     * 작품 생성
+     */
     public Long create(Work work) {
         workRepository.save(work);
         return work.getId();
     }
 
+
+    /**
+     *
+     * @param id
+     * @return
+     * 작품 조회
+     */
     public Work findOne(Long id) {
         return workRepository.findById(id);
     }
@@ -34,6 +47,14 @@ public class WorkService {
         return workRepository.findAll();
     }
 
+
+    /**
+     *
+     * @param id
+     * @param request
+     * @throws IOException
+     * 작품 업데이트
+     */
     public void updateWork(Long id, WorkModifyRequest request) throws IOException {
         Work work = workRepository.findById(id);
         List<String> storeImageFiles = fileStore.storeFiles(request.getImageFiles());
@@ -41,6 +62,11 @@ public class WorkService {
         work.modify(request.getAuthor(), request.getTitle(), request.getDescription(), storeImageFiles);
     }
 
+    /**
+     *
+     * @param id
+     * 작품 업데이트
+     */
     public void delete(Long id) {
         Work work = workRepository.findById(id);
         workRepository.remove(work);

@@ -58,8 +58,8 @@ public class OrderService {
         return order.getId();
     }
 
-    @Transactional
     public Long order_Wish(Member member, Delivery delivery) { // 장바구니 주문
+
         Wish wishByMemberId = wishService.findWishByMemberId(member.getId());
         List<WishItem> userWishList = wishService.findWishItemsByWishId(wishByMemberId.getId());
 
@@ -73,7 +73,6 @@ public class OrderService {
         }
 
         Long orderId = add_Wish_Order(member,delivery, orderItemList);
-
 
         delete_All_Wish(wishByMemberId);
 
@@ -109,7 +108,6 @@ public class OrderService {
     }
 
 
-    @Transactional
     public Long order_One(Member member,Delivery delivery,Item item,int count) {
         OrderItem createOrderOne = add_One_Item(item, count);
 

@@ -3,11 +3,14 @@ package com.onepo.server.api.controller;
 import com.onepo.server.api.dto.ResponseDto;
 import com.onepo.server.api.dto.item.ItemRegisterRequest;
 import com.onepo.server.api.dto.item.ItemResponse;
+import com.onepo.server.domain.item.CollaborateSeries;
 import com.onepo.server.domain.item.Item;
+import com.onepo.server.domain.item.OriginalSeries;
 import com.onepo.server.file.FileStore;
 import com.onepo.server.service.ItemService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,13 +33,27 @@ public class ItemApiController {
      */
 
     @PostMapping("/items/register")
-    public ResponseEntity<ResponseDto> saveItem(@Validated ItemRegisterRequest request) throws IOException {
+    public ResponseEntity<ResponseDto> saveItem(@Validated ItemRegisterRequest request, BindingResult result) throws IOException {
         List<String> storeFiles = fileStore.storeFiles(request.getImages());
 
-        Item item=request.toEntity(storeFiles);
-        itemService.saveItem(item);
+        if(result.hasErrors()) {
+            return ResponseEntity.ok().body(new ResponseDto("상품 정보를 다시 입력하세요"));
+        }
 
-        return ResponseEntity.ok().body(new ResponseDto("아이템 등록이 완료되었습니다."));
+        if(request.getItemSeries().equals("O")) {
+
+            OriginalSeries originalSeries = request.toEntity_O(storeFiles);
+            itemService.saveItem(originalSeries);
+
+        } else if (request.getItemSeries().equals("C")) {
+
+            CollaborateSeries collaborateSeries = request.toEntity_C(storeFiles);
+            itemService.saveItem(collaborateSeries);
+        } else {
+            return ResponseEntity.ok().body(new ResponseDto("상품 카테고리를 다시 입력하세요"));
+        }
+
+        return ResponseEntity.ok().body(new ResponseDto("상품 등록이 완료되었습니다."));
     }
 
     /**

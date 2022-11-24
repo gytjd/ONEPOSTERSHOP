@@ -18,8 +18,12 @@ public class ItemModifyRequest {
     @NotNull
     private Integer stockQuantity;
 
+    @NotBlank
+    private String artist;
+
     @NotBlank(message = "상품 설명을 입력해주세요.")
     private String description;
 
     private List<MultipartFile> images;
+
 }

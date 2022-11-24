@@ -50,7 +50,7 @@ public class WishService {
             save_wish_Item(findWish);
         }
         else {
-            WishItem update = updateWish(findWish,findItem,count);
+            WishItem update = updateWish(findWish,count);
             save_wish_Item(update);
         }
 
@@ -111,7 +111,7 @@ public class WishService {
     }
 
 
-    public WishItem updateWish(WishItem findWish,Item item,int count) {
+    public WishItem updateWish(WishItem findWish,int count) {
         WishItem update=findWish;
         update.setWish(findWish.getWish());
         update.setItem(findWish.getItem());

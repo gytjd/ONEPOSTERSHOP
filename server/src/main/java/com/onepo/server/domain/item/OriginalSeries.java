@@ -5,11 +5,15 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import java.util.List;
 
 @Entity
 @Getter
 @NoArgsConstructor
-@DiscriminatorValue("O")
 public class OriginalSeries extends Item {
-    private String artist;
+
+
+    public OriginalSeries(String itemName, Integer price, Integer stockQuantity, String description, String artist, List<String> filePath) {
+        super(itemName, price, stockQuantity, description, artist, filePath);
+    }
 }

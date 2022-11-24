@@ -12,6 +12,7 @@ import java.util.List;
 @Entity
 @Getter
 @NoArgsConstructor
+@Inheritance( strategy = InheritanceType.SINGLE_TABLE )
 public class Item {
 
     @Id
@@ -22,33 +23,26 @@ public class Item {
     private String itemName;
     private int price;
     private int stockQuantity;
+    private String artist;
     private String description;
-
     @ElementCollection
     private List<String> images;
 
-    public Item(String itemName, Integer price, Integer stockQuantity, String description, List<String> filePath) {
+    public Item(String itemName, Integer price, Integer stockQuantity, String description,String artist,List<String> filePath) {
         this.itemName = itemName;
         this.price = price;
         this.stockQuantity = stockQuantity;
+        this.artist=artist;
         this.description = description;
         this.images = filePath;
     }
 
-    public void createArt(String itemName, int stockQuantity, int price, String description) {
-        this.itemName = itemName;
-        this.stockQuantity = stockQuantity;
-        this.price = price;
-        this.description = description;
-    }
 
     public void addStock(int quantity) {
         this.stockQuantity+=quantity;
     }
 
     public void removeStock(int quantity) {
-
-
         int restStock=this.stockQuantity-quantity;
 
         if (this.stockQuantity==0 || restStock<0) {
@@ -58,10 +52,11 @@ public class Item {
         this.stockQuantity=restStock;
     }
 
-    public void modify(String itemName, Integer price, Integer stockQuantity, String description, List<String> storeImageFiles) {
+    public void modify(String itemName, Integer price, Integer stockQuantity, String description,String artist,List<String> storeImageFiles) {
         this.itemName = itemName;
         this.price = price;
         this.stockQuantity = stockQuantity;
+        this.artist=artist;
         this.description = description;
         this.images = storeImageFiles;
     }

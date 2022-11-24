@@ -42,6 +42,14 @@ public class ItemService {
         return itemRepository.findItemById(id);
     }
 
+    public List<Item> findOriginalItems() {
+        return itemRepository.findOriginal();
+    }
+
+    public List<Item> findCollaborateItems() {
+        return itemRepository.findCollaborate();
+    }
+
     /**
      *
      * @param itemId
@@ -54,8 +62,13 @@ public class ItemService {
         Item findItem = itemRepository.findItemById(itemId);
         List<String> storeImageFiles = fileStore.storeFiles(request.getImages());
 
-        findItem.modify(request.getItemName(), request.getPrice(), request.getStockQuantity(),
-                request.getDescription(), storeImageFiles);
+        findItem.modify(
+                request.getItemName(),
+                request.getPrice(),
+                request.getStockQuantity(),
+                request.getArtist(),
+                request.getDescription(),
+                storeImageFiles);
     }
 
     /**

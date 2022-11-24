@@ -1,7 +1,9 @@
 package com.onepo.server.api.dto.item;
 
 
+import com.onepo.server.domain.item.CollaborateSeries;
 import com.onepo.server.domain.item.Item;
+import com.onepo.server.domain.item.OriginalSeries;
 import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -21,16 +23,33 @@ public class ItemRegisterRequest {
     @NotNull(message = "상품 수량을 입력해주세요.")
     private Integer stockQuantity;
 
+    @NotBlank(message="상품 작가를 입력해주세요")
+    private String artist;
+
     @NotBlank(message = "상품 설명을 입력해주세요.")
     private String description;
 
     private List<MultipartFile> images;
 
-    public Item toEntity(List<String> filePath) {
-        Item item=new Item(itemName, price, stockQuantity, description, filePath);
+    @NotBlank(message = "상품 카테고리를 입력하세요.")
+    private String itemSeries;
 
-        return item;
+
+    public OriginalSeries toEntity_O(List<String> filePath) {
+        OriginalSeries originalSeries=new OriginalSeries(itemName, price, stockQuantity,artist,description, filePath);
+
+        return originalSeries;
     }
+
+    public CollaborateSeries toEntity_C(List<String> filePath) {
+        CollaborateSeries collaborateSeries=new CollaborateSeries(itemName,price,stockQuantity,artist,description,filePath);
+
+        return collaborateSeries;
+    }
+
+
+
+
 
 
 }

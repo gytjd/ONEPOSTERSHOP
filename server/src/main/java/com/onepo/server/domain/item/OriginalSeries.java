@@ -10,6 +10,7 @@ import java.util.List;
 @Entity
 @Getter
 @NoArgsConstructor
+@DiscriminatorValue("O")
 public class OriginalSeries extends Item {
 
 

@@ -12,7 +12,6 @@ import java.util.List;
 @Entity
 @Getter
 @NoArgsConstructor
-@Inheritance( strategy = InheritanceType.SINGLE_TABLE )
 public class Item {
 
     @Id

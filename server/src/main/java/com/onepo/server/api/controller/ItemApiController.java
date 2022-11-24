@@ -76,6 +76,43 @@ public class ItemApiController {
 
     /**
      *
+     * @return
+     * original Category
+     */
+    @GetMapping("/items/original")
+    public ResponseEntity<List<ItemResponse>> getOriItems() {
+        List<Item> items = itemService.findOriginalItems();
+
+        List<ItemResponse> itemResponseList=new ArrayList<>();
+
+        for(Item item:items) {
+            itemResponseList.add(ItemResponse.item_toDto(item));
+        }
+
+        return ResponseEntity.ok().body(itemResponseList);
+    }
+
+    /**
+     *
+     * @return
+     * collaborate Category
+     */
+    @GetMapping("/items/collaborate")
+    public ResponseEntity<List<ItemResponse>> getColItems() {
+        List<Item> items = itemService.findCollaborateItems();
+
+        List<ItemResponse> itemResponseList=new ArrayList<>();
+
+        for(Item item:items) {
+            itemResponseList.add(ItemResponse.item_toDto(item));
+        }
+
+        return ResponseEntity.ok().body(itemResponseList);
+    }
+
+
+    /**
+     *
      *
      * 아이템 단건 조회
      */

@@ -12,6 +12,8 @@ public class ItemResponse {
     private String itemName;
     private Integer price;
     private Integer stockQuantity;
+
+    private String artist;
     private String description;
 
     private List<String> images;
@@ -20,6 +22,7 @@ public class ItemResponse {
         this.itemName=item.getItemName();
         this.price=item.getPrice();
         this.stockQuantity=item.getStockQuantity();
+        this.artist=item.getArtist();
         this.description=item.getDescription();
         this.images=item.getImages();
     }

@@ -11,6 +11,7 @@ import java.util.List;
 @Entity
 @Getter
 @NoArgsConstructor
+@DiscriminatorValue("C")
 public class CollaborateSeries extends Item{
 
 

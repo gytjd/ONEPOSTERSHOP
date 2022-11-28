@@ -14,7 +14,7 @@ import java.util.List;
 public class OriginalSeries extends Item {
 
 
-    public OriginalSeries(String itemName, Integer price, Integer stockQuantity, String description, String artist, List<String> filePath) {
-        super(itemName, price, stockQuantity, description, artist, filePath);
+    public OriginalSeries(String itemName, Integer price, Integer stockQuantity, String artist,String description, List<String> filePath) {
+        super(itemName, price, stockQuantity, artist,description, filePath);
     }
 }

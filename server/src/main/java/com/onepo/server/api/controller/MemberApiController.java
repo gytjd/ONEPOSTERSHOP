@@ -4,6 +4,7 @@ import com.onepo.server.api.dto.ResponseDto;
 import com.onepo.server.api.dto.member.*;
 import com.onepo.server.domain.member.Member;
 import com.onepo.server.domain.member.SessionConst;
+import com.onepo.server.exception.FormatException;
 import com.onepo.server.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -29,7 +30,7 @@ public class MemberApiController {
     public ResponseEntity<ResponseDto> saveMember(@Validated @RequestBody MemberSignUpRequest request, BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()) {
-            ResponseEntity.ok().body(new ResponseDto("정보를 잘못 입력하셨습니다."));
+            throw new FormatException("이메일 형식이 올바르지 않습니다.");
         }
 
         Member member = new Member();

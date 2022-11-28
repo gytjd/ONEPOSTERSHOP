@@ -23,6 +23,7 @@ public class Member {
     private String name;
     private String userId;
     private String password;
+    @Email
     private String email;
 
     private String token;

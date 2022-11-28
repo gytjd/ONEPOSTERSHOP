@@ -134,6 +134,8 @@ public class ItemApiController {
         Item item = itemService.findOne(id);
         itemService.delete_one(item);
 
+        System.out.println(11111);
+
         return ResponseEntity.ok().body(new ResponseDto(item.getItemName() + "상품이 삭제 되었습니다."));
     }
 
@@ -143,8 +145,8 @@ public class ItemApiController {
      * 아이템 전체 삭제
      */
 
-    @GetMapping("items/{itemId}/deleteAll")
-    public ResponseEntity<ResponseDto> delete_all_item(@PathVariable String itemId) {
+    @GetMapping("items/deleteAll")
+    public ResponseEntity<ResponseDto> delete_all_item() {
         List<Item> items = itemService.findAll();
         for(Item item:items) {
             itemService.delete_one(item);

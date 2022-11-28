@@ -14,7 +14,6 @@ import java.util.List;
 @DiscriminatorValue("C")
 public class CollaborateSeries extends Item{
 
-
     public CollaborateSeries(String itemName, Integer price, Integer stockQuantity, String description, String artist, List<String> filePath) {
         super(itemName, price, stockQuantity, description, artist, filePath);
     }

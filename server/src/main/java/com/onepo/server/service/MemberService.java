@@ -6,6 +6,7 @@ import com.onepo.server.domain.member.Member;
 import com.onepo.server.exception.NewPasswordWrong;
 import com.onepo.server.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

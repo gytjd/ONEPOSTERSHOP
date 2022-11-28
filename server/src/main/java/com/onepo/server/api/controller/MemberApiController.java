@@ -30,7 +30,7 @@ public class MemberApiController {
     public ResponseEntity<ResponseDto> saveMember(@Validated @RequestBody MemberSignUpRequest request, BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()) {
-            throw new FormatException("이메일 형식이 올바르지 않습니다.");
+            return ResponseEntity.badRequest().body(new ResponseDto("이메일 형식"));
         }
 
         Member member = new Member();

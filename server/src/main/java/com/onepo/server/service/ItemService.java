@@ -2,6 +2,7 @@ package com.onepo.server.service;
 
 import com.onepo.server.api.dto.item.ItemModifyRequest;
 import com.onepo.server.domain.item.Item;
+import com.onepo.server.domain.item.OriginalSeries;
 import com.onepo.server.file.FileStore;
 import com.onepo.server.repository.ItemRepository;
 import lombok.RequiredArgsConstructor;
@@ -30,9 +31,7 @@ public class ItemService {
     }
 
     /**
-     *
-     * @return
-     * 상품 조회 기능
+     * @return 상품 조회 기능
      */
     public List<Item> findAll() {
         return itemRepository.findAll();

@@ -1,6 +1,7 @@
 package com.onepo.server.repository;
 
 import com.onepo.server.domain.item.Item;
+import com.onepo.server.domain.item.OriginalSeries;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -25,8 +26,10 @@ public class ItemRepository {
     }
 
     public List<Item> findAll() {
-        return em.createQuery("select m from Member As m", Item.class)
+        List resultList = em.createNativeQuery("select * from item", Item.class)
                 .getResultList();
+
+        return resultList;
     }
 
     public Item findItemById(Long id) {

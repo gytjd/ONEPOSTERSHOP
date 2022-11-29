@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -41,11 +42,23 @@ public class PaymentController {
         this.paymentService = paymentService;
     }
 
+    @GetMapping("/payment")
+    public String paymentForm(Model model){
+        System.out.println("================paymentForm 호출====================");
+
+        paymentDTO = paymentService.initPayment(tokenId);
+
+        model.addAttribute("paymentInfo",paymentDTO);
+        return "payment/payment";
+    }
+
     @ResponseBody
-    @PostMapping("member/{orderId}/payment/complete")
+    @PostMapping("member/{orderId}/payment")
     public void getTokenId(@PathVariable("orderId") Long token)
     {
-        System.out.println("=================PaymentController getTokenId 호출==================");
+
+        System.out.println("=================getTokenId 호출==================");
+        System.out.println(token);
         tokenId = token;
     }
 

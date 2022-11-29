@@ -180,6 +180,10 @@ public class OrderService {
         return orderRepository.findOrdersByMemberId(id);
     }
 
+    public Order findOrderById(Long id)  {
+        return orderRepository.findOrderById(id);
+    }
+
     public Order findOrderByMemberId(Long id) {
         return orderRepository.findOrderByMemberId(id);
     }
@@ -205,6 +209,8 @@ public class OrderService {
     public List<OrderItem> findOrderItemsByOrderId(Long id) {
         return orderItemRepository.findOrderItemsByOrderId(id);
     }
+
+
 
 
 

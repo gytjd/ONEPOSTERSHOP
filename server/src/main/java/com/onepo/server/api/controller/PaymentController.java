@@ -59,6 +59,8 @@ public class PaymentController {
         System.out.println(paymentDTO.getPrice());
         System.out.println(paymentDTO.getItemName());
         System.out.println("======Test========");
+        System.out.println(paymentInfo.getAmount());
+
 
         if(paymentInfo.getStatus() == paid && paymentInfo.getAmount().intValue() == paymentDTO.getPrice()) {
             System.out.println("검증성공");

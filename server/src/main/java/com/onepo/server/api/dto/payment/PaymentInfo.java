@@ -11,10 +11,13 @@ public class PaymentInfo {
     private String name;
 
     private payStatus status;
+    @JsonProperty("paid_amount")
     private BigDecimal amount;
 
+    @JsonProperty("buyerName")
     private String userId;
 
+    @JsonProperty("merchant_uid")
     private String merUid;
 
     private Integer payAmount;

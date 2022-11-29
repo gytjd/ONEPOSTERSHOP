@@ -1,6 +1,7 @@
 package com.onepo.server.api.controller;
 
 import com.onepo.server.api.dto.ResponseDto;
+import com.onepo.server.api.dto.item.ItemModifyRequest;
 import com.onepo.server.api.dto.item.ItemRegisterRequest;
 import com.onepo.server.api.dto.item.ItemResponse;
 import com.onepo.server.domain.item.CollaborateSeries;
@@ -124,10 +125,22 @@ public class ItemApiController {
         return ResponseEntity.ok().body(new ItemResponse(one));
     }
 
+    /**
+     *
+     * @param id
+     * @return
+     * 아이템 수정
+     */
     @PutMapping("/items/{itemId}/update")
-    public ResponseEntity<ResponseDto> updateItem(@PathVariable("itemId") Long id) {
-        Item one = itemService.findOne(id);
+    public ResponseEntity<ResponseDto> updateItem(@PathVariable("itemId") Long id,
+                                                  @Validated ItemModifyRequest request,
+                                                  BindingResult bindingResult) throws IOException {
 
+        if(bindingResult.hasErrors()) {
+            return ResponseEntity.badRequest().body(new ResponseDto("상품 정보를 다시 한번 확인해주세요."));
+        }
+
+        itemService.updateItem(id,request);
         return ResponseEntity.ok().body(new ResponseDto("상품 정보가 수정되었습니다."));
     }
 

@@ -36,7 +36,7 @@ public class PaymentService {
     }
 
 
-    public PaymentDTO initPayment_byItem(Member member, Item item){
+    public PaymentDTO initPayment_byItem(Member member,Item item){
         PaymentDTO paymentDTO = new PaymentDTO();
 
         paymentDTO.setBuyerName(member.getName());

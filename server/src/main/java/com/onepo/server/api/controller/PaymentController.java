@@ -60,20 +60,20 @@ public class PaymentController {
      *
      * @param model
      * @param itemId
-     * @param request
+     * @param
      * @return 결제
      */
 
-    @PostMapping("/api/items/{itemId}/payment")
+    @GetMapping("/api/items/{itemId}/payment")
     public String payment_OneForm(Model model,
                                @PathVariable Long itemId,
-                               @RequestBody OrderItemRequest request) {
+                                  @RequestBody OrderItemRequest request) {
 
         String token = request.getToken();
         Member findMember = memberService.findByTokenId(token);
 
         Item findItem = itemService.findOne(itemId);
-        paymentDTO = paymentService.initPayment_byItem(findMember, findItem);
+        paymentDTO = paymentService.initPayment_byItem(findMember,findItem);
 
         model.addAttribute("paymentInfo",paymentDTO);
 
@@ -108,7 +108,6 @@ public class PaymentController {
     public @ResponseBody IamportResponse<Payment> paymentByImpUid(@PathVariable(value= "imp_uid") String imp_uid,
                                                                   @RequestBody PaymentInfo paymentInfo) throws IamportResponseException, IOException
     {
-        paymentDTO = paymentService.initPayment(tokenId);
         System.out.println("======Test========");
         System.out.println(paymentDTO.getBuyerName());
         System.out.println(paymentDTO.getPrice());

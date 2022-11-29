@@ -124,6 +124,13 @@ public class ItemApiController {
         return ResponseEntity.ok().body(new ItemResponse(one));
     }
 
+    @PutMapping("/items/{itemId}/update")
+    public ResponseEntity<ResponseDto> updateItem(@PathVariable("itemId") Long id) {
+        Item one = itemService.findOne(id);
+
+        return ResponseEntity.ok().body(new ResponseDto("상품 정보가 수정되었습니다."));
+    }
+
     /**
      *
      *
@@ -133,8 +140,6 @@ public class ItemApiController {
     public ResponseEntity<ResponseDto> delete_one_item(@PathVariable("itemId") Long id) {
         Item item = itemService.findOne(id);
         itemService.delete_one(item);
-
-        System.out.println(11111);
 
         return ResponseEntity.ok().body(new ResponseDto(item.getItemName() + "상품이 삭제 되었습니다."));
     }
@@ -148,6 +153,7 @@ public class ItemApiController {
     @GetMapping("items/deleteAll")
     public ResponseEntity<ResponseDto> delete_all_item() {
         List<Item> items = itemService.findAll();
+
         for(Item item:items) {
             itemService.delete_one(item);
         }

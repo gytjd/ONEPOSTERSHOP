@@ -1,20 +1,18 @@
 package com.onepo.server.api.controller;
 
 import com.onepo.server.api.dto.ResponseDto;
-import com.onepo.server.api.dto.order.OrderListRequest;
-import com.onepo.server.api.dto.order.OrderRequest;
-import com.onepo.server.api.dto.order.OrderResponse;
-import com.onepo.server.api.dto.order.OrderWishRequest;
+import com.onepo.server.api.dto.order.*;
+import com.onepo.server.api.dto.payment.PaymentDTO;
 import com.onepo.server.domain.delivery.Delivery;
 import com.onepo.server.domain.item.Item;
 import com.onepo.server.domain.member.Member;
 import com.onepo.server.domain.order.Order;
-import com.onepo.server.service.ItemService;
-import com.onepo.server.service.MemberService;
-import com.onepo.server.service.OrderService;
-import com.onepo.server.service.WishService;
+import com.onepo.server.domain.payment.Payment;
+import com.onepo.server.service.*;
+import com.siot.IamportRestClient.IamportClient;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -32,6 +30,16 @@ public class OrderApiController {
     private final MemberService memberService;
     private final ItemService itemService;
 
+
+    @PostMapping("items/{itemId}/orderForm")
+    public ResponseEntity<OrderItemResponse> orderForm(@PathVariable Long itemId,
+                                                       @RequestBody OrderItemRequest request) {
+
+        Item one = itemService.findOne(itemId);
+        OrderItemResponse orderItemResponse = OrderItemResponse.orderItem_toDto(request.getToken(),one);
+
+        return ResponseEntity.ok().body(orderItemResponse);
+    }
 
     /**
      *

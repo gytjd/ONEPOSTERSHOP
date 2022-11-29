@@ -62,7 +62,7 @@
                 let parseResponse = await response.text();
                 console.log(parseResponse);
                 if (parseResponse === "ok") {
-                    location.href = "/item-view"; //결제 완료 후 이동할 url
+                    location.href = "/items/{itemId}/order"; //결제 완료 후 이동할 url
                 }
             }
 

@@ -1,10 +1,13 @@
 package com.onepo.server.api.controller;
 
 
+import com.onepo.server.api.dto.order.OrderItemRequest;
 import com.onepo.server.api.dto.payment.PaymentDTO;
 import com.onepo.server.api.dto.payment.PaymentInfo;
+import com.onepo.server.domain.item.Item;
 import com.onepo.server.domain.member.Member;
 import com.onepo.server.domain.order.Order;
+import com.onepo.server.service.ItemService;
 import com.onepo.server.service.MemberService;
 import com.onepo.server.service.OrderService;
 import com.onepo.server.service.PaymentService;
@@ -27,20 +30,20 @@ import static com.onepo.server.api.dto.payment.payStatus.paid;
 @Log4j2
 @Controller
 @CrossOrigin
+@RequiredArgsConstructor
 public class PaymentController {
 
-    private final IamportClient api;
+    private final IamportClient api = new IamportClient("5433251341413542", "SJK1bopNos7RcY1VPTloUlW5DYC0l9jgP62pGg7yKLNMIzgv8PnPq1AvAceqLzGQgTti9nTLNC72PgTR");
 
     private final PaymentService paymentService;
 
+    private final MemberService memberService;
+
+    private final ItemService itemService;
     private Long tokenId;
     private PaymentDTO paymentDTO;
 
-    @Autowired
-    public PaymentController(PaymentService paymentService){
-        this.api = new IamportClient("5433251341413542", "SJK1bopNos7RcY1VPTloUlW5DYC0l9jgP62pGg7yKLNMIzgv8PnPq1AvAceqLzGQgTti9nTLNC72PgTR");
-        this.paymentService = paymentService;
-    }
+
 
     @GetMapping("/payment")
     public String paymentForm(Model model){
@@ -52,6 +55,32 @@ public class PaymentController {
         return "payment/payment";
     }
 
+
+    /**
+     *
+     * @param model
+     * @param itemId
+     * @param request
+     * @return 결제
+     */
+
+    @PostMapping("/api/items/{itemId}/payment")
+    public String payment_OneForm(Model model,
+                               @PathVariable Long itemId,
+                               @RequestBody OrderItemRequest request) {
+
+        String token = request.getToken();
+        Member findMember = memberService.findByTokenId(token);
+
+        Item findItem = itemService.findOne(itemId);
+        paymentDTO = paymentService.initPayment_byItem(findMember, findItem);
+
+        model.addAttribute("paymentInfo",paymentDTO);
+
+        return "payment/paymentOne";
+    }
+
+
     @ResponseBody
     @PostMapping("member/{orderId}/payment")
     public void getTokenId(@PathVariable("orderId") Long token)
@@ -59,8 +88,21 @@ public class PaymentController {
 
         System.out.println("=================getTokenId 호출==================");
         System.out.println(token);
-        tokenId = token;
+        tokenId=token;
     }
+
+    @PostMapping("/payment")
+    public @ResponseBody String payment(@RequestBody PaymentInfo paymentInfo){
+        System.out.println("출력");
+        System.out.println(paymentInfo.getName());
+        System.out.println(paymentInfo.getAmount());
+        System.out.println(paymentInfo.getMerUid());
+        // paymentRepository.save(paymentDTO);
+        // paymentService.savePayment(paymentDTO); //수정해야함
+
+        return "OK";
+    }
+
 
     @RequestMapping(value="/verifyIamport/{imp_uid}")
     public @ResponseBody IamportResponse<Payment> paymentByImpUid(@PathVariable(value= "imp_uid") String imp_uid,
@@ -83,18 +125,6 @@ public class PaymentController {
             System.out.println("검증실패");
         }
         return null;
-    }
-
-    @PostMapping("/payment")
-    public @ResponseBody String payment(@RequestBody PaymentInfo paymentInfo){
-        System.out.println("출력");
-        System.out.println(paymentInfo.getName());
-        System.out.println(paymentInfo.getAmount());
-        System.out.println(paymentInfo.getMerUid());
-        // paymentRepository.save(paymentDTO);
-        // paymentService.savePayment(paymentDTO); //수정해야함
-
-        return "OK";
     }
 
 

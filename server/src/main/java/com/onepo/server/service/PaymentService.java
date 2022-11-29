@@ -1,6 +1,7 @@
 package com.onepo.server.service;
 
 import com.onepo.server.api.dto.payment.PaymentDTO;
+import com.onepo.server.domain.item.Item;
 import com.onepo.server.domain.member.Member;
 import com.onepo.server.domain.order.Order;
 import com.onepo.server.domain.order.OrderItem;
@@ -13,7 +14,6 @@ import java.util.List;
 public class PaymentService {
 
     private final OrderService orderService;
-    private final MemberService memberService;
 
     public PaymentDTO initPayment(Long token){
         PaymentDTO paymentDTO = new PaymentDTO();
@@ -21,19 +21,34 @@ public class PaymentService {
         Order order = orderService.findOrderById(token);
         Member member = order.getMember();
 
-        List<OrderItem> items = order.getOrderItems();
-        String itemName = items.get(0).getItem().getItemName();
+        String itemName = order.getOrderItems().get(0).getItem().getItemName();
 
-        int totalPrice = order.getTotalPrice();
-        String name = member.getName();
-
-        paymentDTO.setBuyerName(name);
-        paymentDTO.setPrice(totalPrice);
+        paymentDTO.setBuyerName(member.getName());
+        paymentDTO.setPrice(order.getTotalPrice());
         paymentDTO.setItemName(itemName);
+
+
         System.out.println(paymentDTO.getBuyerName());
         System.out.println(paymentDTO.getPrice());
         System.out.println(paymentDTO.getItemName());
 
         return paymentDTO;
     }
+
+
+    public PaymentDTO initPayment_byItem(Member member, Item item){
+        PaymentDTO paymentDTO = new PaymentDTO();
+
+        paymentDTO.setBuyerName(member.getName());
+        paymentDTO.setPrice(item.getPrice());
+        paymentDTO.setItemName(item.getItemName());
+
+
+        System.out.println(paymentDTO.getBuyerName());
+        System.out.println(paymentDTO.getPrice());
+        System.out.println(paymentDTO.getItemName());
+
+        return paymentDTO;
+    }
+
 }

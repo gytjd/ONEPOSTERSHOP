@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Credit Test</title>
+</head>
+<body>
+<!-- jQuery -->
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js" ></script>
+<!-- iamport.payment.js -->
+<script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.2.0.js"></script>
+
+<div>
+    <h2>Test</h2>
+    <li>
+        <br>
+        </br>
+        <button onclick="requestPay();" class="w-100 btn btn-warning btn-lg"
+                type="submit">결제하기</button>
+    </li>
+</div>
+</body>
+</html>
+
+
+<script th:inline="javascript">
+    var IMP = window.IMP;
+
+    var money = [[${paymentInfo.price}]];
+    var buyerName = [[${paymentInfo.buyerName}]];
+    var itemName = [[${paymentInfo.itemName}]];
+    alert(money);
+    alert(name);
+    alert(itemName);
+    function requestPay() {
+        console.clear();
+        console.log(`payment() invoked`);
+        IMP.init('imp12155630');
+        IMP.request_pay({
+            pg: 'html5_inicis',
+            pay_method: "card",
+            merchant_uid: 'order_' + new Date().getTime(),
+            name: itemName, //결제창에서 보여질 이름
+            amount: money, //실제 결제되는 가격
+            buyer_email: "email@ed.com",
+            buyer_name: buyerName,
+            buyer_tel: "buyerTel",
+        }, async function (rsp) {
+            if (rsp.success) {
+                alert("Controller Test");
+                let response = await fetch("/payment", {
+                    method: "POST",
+                    body: JSON.stringify(rsp),
+                    headers: {
+                        "Content-Type": "application/json; charset=utf-8"
+                    }
+                });
+
+                let parseResponse = await response.text();
+                console.log(parseResponse);
+                if (parseResponse === "ok") {
+                    location.href = "/item-view"; //결제 완료 후 이동할 url
+                }
+            }
+
+            $.ajax({
+                type: "POST",
+                url: "/verifyIamport/" + rsp.imp_uid,
+                data: JSON.stringify(rsp),
+                headers: {
+                    "Content-Type": "application/json; charset=utf-8"
+                },
+            }).done(function (data) {
+                console.log(data);
+                if (rsp.status == "paid" && rsp.paid_amount == data.response.amount) {
+                    alert("결제 및 결제검증완료");
+                    msg = '결제가 완료되었습니다.';
+                    msg += '\n고유ID : ' + rsp.imp_uid;
+                    msg += '\n상점 거래ID : ' + rsp.merchant_uid;
+                    msg += '\n결제 금액 : ' + rsp.paid_amount;
+                    alert(msg);
+                } else {
+                    alert("결제 정보 위조");
+                }
+            });
+        });
+    }
+</script>

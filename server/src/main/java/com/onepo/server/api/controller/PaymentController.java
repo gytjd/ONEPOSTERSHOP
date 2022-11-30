@@ -2,8 +2,11 @@ package com.onepo.server.api.controller;
 
 
 import com.onepo.server.api.dto.order.OrderItemRequest;
+import com.onepo.server.api.dto.order.OrderListRequest;
+import com.onepo.server.api.dto.order.OrderWishPaymentRequest;
 import com.onepo.server.api.dto.payment.PaymentDTO;
 import com.onepo.server.api.dto.payment.PaymentInfo;
+import com.onepo.server.api.dto.wish.WishResponse;
 import com.onepo.server.domain.item.Item;
 import com.onepo.server.domain.member.Member;
 import com.onepo.server.domain.order.Order;
@@ -40,20 +43,9 @@ public class PaymentController {
     private final MemberService memberService;
 
     private final ItemService itemService;
-    private Long tokenId;
     private PaymentDTO paymentDTO;
 
 
-
-    @GetMapping("/payment")
-    public String paymentForm(Model model){
-        System.out.println("================paymentForm 호출====================");
-
-        paymentDTO = paymentService.initPayment(tokenId);
-
-        model.addAttribute("paymentInfo",paymentDTO);
-        return "payment/payment";
-    }
 
 
     /**
@@ -61,10 +53,10 @@ public class PaymentController {
      * @param model
      * @param itemId
      * @param
-     * @return 결제
+     * @return 상품 한개 결제
      */
 
-    @GetMapping("/api/items/{itemId}/payment")
+    @PostMapping("/api/items/{itemId}/payment")
     public String payment_OneForm(Model model,
                                @PathVariable Long itemId,
                                   @RequestBody OrderItemRequest request) {
@@ -81,27 +73,30 @@ public class PaymentController {
     }
 
 
-    @ResponseBody
-    @PostMapping("member/{orderId}/payment")
-    public void getTokenId(@PathVariable("orderId") Long token)
+
+
+    /**
+     *
+     *
+     * @return 상품 여러개 결제
+     */
+    @PostMapping("/api/member/{tokenId}/wishList/payment")
+    public String payment_wishForm(Model model,
+                                   @PathVariable String tokenId,
+                                   @RequestBody OrderWishPaymentRequest request)
     {
+        Member findMember = memberService.findByTokenId(tokenId);
 
-        System.out.println("=================getTokenId 호출==================");
-        System.out.println(token);
-        tokenId=token;
+        List<WishResponse> findWish = request.getWishResponseList();
+
+        paymentDTO= paymentService.initPayment_byWish(findMember, findWish);
+
+
+        model.addAttribute("paymentInfo",paymentDTO);
+
+        return "payment/payment";
     }
 
-    @PostMapping("/payment")
-    public @ResponseBody String payment(@RequestBody PaymentInfo paymentInfo){
-        System.out.println("출력");
-        System.out.println(paymentInfo.getName());
-        System.out.println(paymentInfo.getAmount());
-        System.out.println(paymentInfo.getMerUid());
-        // paymentRepository.save(paymentDTO);
-        // paymentService.savePayment(paymentDTO); //수정해야함
-
-        return "OK";
-    }
 
 
     @RequestMapping(value="/verifyIamport/{imp_uid}")
